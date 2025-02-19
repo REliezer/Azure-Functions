@@ -1,0 +1,19 @@
+{
+    "bindings": [
+      {
+        "authLevel": "anonymous",
+        "type": "httpTrigger",
+        "direction": "in",
+        "name": "req",
+        "route": "becarios",
+        "methods": ["get", "post"]
+      },
+      {
+        "type": "http",
+        "direction": "out",
+        "name": "res"
+      }
+    ],
+    "scriptFile": "httpBecario.ts"
+  }
+  
