@@ -6,7 +6,7 @@ import * as bcrypt from "bcryptjs";
 export async function loginBecario(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
         const body = await request.json() as { no_cuenta?: string; contrasena?: string };
-        
+
         if (!body.no_cuenta || !body.contrasena) {
             return { status: 400, body: 'El campo no_cuenta y la contraseña son requeridos' };
         }
@@ -33,7 +33,18 @@ export async function loginBecario(request: HttpRequest, context: InvocationCont
             return { status: 401, body: 'Contraseña incorrecta' };
         }
 
-        return { status: 200, body: 'Login exitoso' };
+        // Actualizar último acceso
+        const lastAccessUpdate = new Date(); // Fecha y hora actual
+        let updateResult = await pool.request()
+            .input("noCuenta", sql.NVarChar, body.no_cuenta)
+            .input("lastAccessUpdate", sql.DateTime, lastAccessUpdate)
+            .query("UPDATE becario SET ultimo_acceso = @lastAccessUpdate WHERE no_cuenta = @noCuenta");
+
+        if (updateResult.rowsAffected[0] === 0) {
+            return { status: 500, body: 'No se pudo actualizar ultimo_acceso' };
+        }
+
+        return { status: 200, body: 'Login exitoso y actualizado su ultimo acceso.' };
     } catch (error) {
         context.log(`Error: ${error}`);
         return { status: 500, body: 'Internal Server Error' };
