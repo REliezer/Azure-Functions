@@ -7,6 +7,7 @@ import { loginBecario } from "./functions/Becarios/loginBecario";
 import { encryptPasswords } from "./functions/Becarios/encryptPasswords";
 import { getAllBecas } from "./functions/Becas/getAllBecas";
 import { loginEmployee } from "./functions/Employees/loginEmployee";
+import { encryptPasswordsEmployees } from "./functions/Employees/encryptPasswordsEmployees";
 
 //Preguntas Frecuentes
 app.http('getFAQ', {
@@ -22,7 +23,14 @@ app.http('loginEmployee', {
     authLevel: 'anonymous',
     route: 'employees/login',
     handler: loginEmployee
-})
+});
+
+app.http('encryptPasswordsEmployees', {
+    methods: ['POST'],
+    authLevel: 'anonymous',
+    route: 'employees/encrypt',
+    handler: encryptPasswordsEmployees,
+});
 
 //Becarios
 app.http('getAllBecarios', {
@@ -42,7 +50,7 @@ app.http('loginBecario', {
 app.http('encryptPasswords', {
     methods: ['POST'],
     authLevel: 'anonymous',
-    route: "becarios/encrypt",
+    route: 'becarios/encrypt',
     handler: encryptPasswords,
 });
 */
