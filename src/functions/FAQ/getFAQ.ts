@@ -1,10 +1,5 @@
-import { app, HttpRequest, HttpResponseInit, InvocationContext, output, StorageQueueOutput } from "@azure/functions";
+import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { getDbConnection } from "../dbConnection";
-
-const sendToQueue: StorageQueueOutput = output.storageQueue({
-    queueName: 'outqueue',
-    connection: 'AzureWebJobsStorage',
-});
 
 export async function getFAQ(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
@@ -35,9 +30,4 @@ export async function getFAQ(request: HttpRequest, context: InvocationContext): 
     }
 };
 
-app.http('getFAQ', {
-    methods: ['GET'],
-    extraOutputs: [sendToQueue],
-    authLevel: 'anonymous',
-    handler: getFAQ,
-});
+

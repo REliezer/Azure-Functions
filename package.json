@@ -7,19 +7,23 @@
     "watch": "tsc -w",
     "clean": "rimraf dist",
     "prestart": "npm run clean && npm run build",
-    "start": "func start node dist/index.js",
-    "test": "echo \"No tests yet...\""
+    "start": "func start",
+    "test": "jest"
   },
   "dependencies": {
     "@azure/functions": "^4.0.0",
-    "bcrypt": "^5.1.1",
+    "@TYPES/MSSQL": "npm:@types/mssql@^9.1.7",
+    "bcryptjs": "^3.0.2",
     "mssql": "^11.0.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/jest": "^29.5.14",
     "@types/mssql": "^9.1.7",
     "@types/node": "^20.x",
+    "jest": "^29.7.0",
     "rimraf": "^5.0.0",
+    "ts-jest": "^29.2.5",
     "typescript": "^5.7.3"
   },
   "main": "dist/src/{index.js,functions/*.js}"
