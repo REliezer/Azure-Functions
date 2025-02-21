@@ -10,6 +10,8 @@ import { loginEmployee } from "./functions/auth/loginEmployee";
 import { encryptPasswordsEmployees } from "./functions/Employees/encryptPasswordsEmployees";
 import { changePassword } from "./functions/auth/changePassword";
 import { loginUser } from "./functions/auth/loginUser";
+import { getBecaById } from "./functions/Becas/getBecaById";
+import { planillaByIdBecario } from "./functions/Planilla/planillaByIdBecario";
 
 //Auth
 app.http('changePassword', {
@@ -20,7 +22,7 @@ app.http('changePassword', {
 });
 
 app.http('loginUser', {
-    methods: ['GET', 'POST'],
+    methods: ['POST'],
     authLevel: 'anonymous',
     route: "auth/login",
     handler: loginUser
@@ -64,14 +66,14 @@ app.http('getAllBecarios', {
     handler: getAllBecarios,
 });
 
-/*
+
 app.http('encryptPasswords', {
     methods: ['POST'],
     authLevel: 'anonymous',
     route: 'becarios/encrypt',
     handler: encryptPasswords,
 });
-*/
+
 app.http('getBecarioNoCuenta', {
     methods: ['POST'],
     authLevel: 'anonymous',
@@ -93,4 +95,19 @@ app.http('getAllBecas', {
     authLevel: 'anonymous',
     route: "becas",
     handler: getAllBecas,
+});
+
+app.http('getBecaById', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: 'becas/{id?}',
+    handler: getBecaById,
+});
+
+//Planilla
+app.http('planillaByIdBecario', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: 'planilla/{id?}',
+    handler: planillaByIdBecario,
 });

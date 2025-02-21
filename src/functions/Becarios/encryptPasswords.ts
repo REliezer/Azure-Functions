@@ -1,7 +1,7 @@
 import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { getDbConnection } from "../dbConnection";
 import * as sql from "mssql";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 
 export async function encryptPasswords(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
