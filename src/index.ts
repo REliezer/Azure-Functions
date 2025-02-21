@@ -8,6 +8,7 @@ import { encryptPasswords } from "./functions/Becarios/encryptPasswords";
 import { getAllBecas } from "./functions/Becas/getAllBecas";
 import { loginEmployee } from "./functions/Employees/loginEmployee";
 import { encryptPasswordsEmployees } from "./functions/Employees/encryptPasswordsEmployees";
+import { changePassword } from "./functions/Personas/changePassword";
 
 //Preguntas Frecuentes
 app.http('getFAQ', {
@@ -75,4 +76,12 @@ app.http('getAllBecas', {
     authLevel: 'anonymous',
     route: "becas",
     handler: getAllBecas,
+});
+
+//Personas
+app.http('changePassword', {
+    methods: ['POST'],
+    authLevel: 'anonymous',
+    route: "services/changePassword",
+    handler: changePassword,
 });
