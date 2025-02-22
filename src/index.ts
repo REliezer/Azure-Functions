@@ -22,7 +22,7 @@ app.http('getActivities', {
 app.http('putActivityAvailable', {
     methods: ['PUT'],  // Usamos el método PUT
     authLevel: 'anonymous',  // Puedes cambiar el nivel de autenticación según lo que necesites
-    route: "activities/{actividad_id}",  // Ruta dinámica para el id de la actividad
+    route: "putActivityAvailable",  // Ruta dinámica para el id de la actividad
     handler: putActivityAvailable,  // Llamamos la función que maneja la actualización
 });
 
