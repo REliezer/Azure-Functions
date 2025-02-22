@@ -2,34 +2,26 @@ import { HttpRequest, HttpResponseInit, InvocationContext, output, StorageQueueO
 import { getDbConnection } from "../dbConnection";
 import * as sql from "mssql";
 
-
-export async function getBecarioNoCuenta(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+export async function planillaByIdBecario(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
         context.log(`Http function processed request for url "${request.url}"`);
-        
-        let no_cuenta: string | undefined;
-        try {
-            const body = await request.json() as { no_cuenta?: string };
-            no_cuenta = body.no_cuenta;
-            if (!no_cuenta) {
-                return { status: 400, body: 'El campo no_cuenta es requerido' };
-            }
-        } catch (error) {
-            return { status: 400, body: 'Solicitud inválida, se esperaba un JSON' };
+
+        const becario_id = request.params.id;
+        if (!becario_id) {
+            return { status: 400, body: 'El campo becario_id es requerido' };
         }
-
-        context.log(`Received no_cuenta: ${no_cuenta}`);
-
+        // Conectar a la base de datos
         let pool = await getDbConnection();
         if (!pool) {
             return { status: 500, body: 'No se pudo conectar a la base de datos' };
         }
         context.log("Connected to database");
 
-        // Obtiene un becario por numero de cuenta
+        // Obtiene las planillas disponibles
         let result = await pool.request()
-        .input('noCuenta', sql.NVarChar, no_cuenta)
-            .query("SELECT * FROM becario WHERE no_cuenta = @noCuenta");
+            .input('becario_id', sql.NChar, becario_id)
+            .query("SELECT * FROM planilla_x_mes WHERE becario_id = @becario_id");
+
         context.log("Consulta ejecutada con éxito");
 
         return {
@@ -38,6 +30,7 @@ export async function getBecarioNoCuenta(request: HttpRequest, context: Invocati
                 'Content-Type': 'application/json'
             }
         };
+
     } catch (error) {
         context.log(`Error: ${error}`);
         return {
