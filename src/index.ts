@@ -8,6 +8,15 @@ import { encryptPasswords } from "./functions/Becarios/encryptPasswords";
 import { getAllBecas } from "./functions/Becas/getAllBecas";
 import { loginEmployee } from "./functions/auth/loginEmployee";
 import { encryptPasswordsEmployees } from "./functions/Employees/encryptPasswordsEmployees";
+import { getActivities } from "./functions/Actividades/getActivities";
+
+//Actividades
+app.http('getActivities', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: "activities",
+    handler: getActivities,
+});
 
 //Preguntas Frecuentes
 app.http('getFAQ', {
@@ -16,6 +25,7 @@ app.http('getFAQ', {
     route: "faq",
     handler: getFAQ,
 });
+
 
 //Employees
 app.http('encryptPasswordsEmployees', {
