@@ -22,8 +22,9 @@ export async function putActivityAvailable(request: HttpRequest, context: Invoca
         let pool = await getDbConnection();
         context.log("Connected to database");
 
+        // Ejecutar el procedimiento almacenado
         let result = await pool.request()
-            .input("actividad_id", sql.NChar, body.actividad_id)
+            .input("actividad_id", sql.NVarChar, body.actividad_id)
             .input("nombre_actividad", sql.NVarChar, body.nombre_actividad)
             .input("descripcion", sql.NVarChar, body.descripcion)
             .input("fecha_actividad", sql.Date, body.fecha_actividad)
@@ -32,19 +33,7 @@ export async function putActivityAvailable(request: HttpRequest, context: Invoca
             .input("imagen", sql.NVarChar, body.imagen)
             .input("estado_actividad", sql.NVarChar, body.estado_actividad)
             .input("organizador", sql.NVarChar, body.organizador)
-            .query(`
-                UPDATE actividades_disponibles
-                SET 
-                nombre_actividad = @nombre_actividad,
-                descripcion = @descripcion,
-                fecha_actividad = @fecha_actividad,
-                numero_horas = @numero_horas,
-                ubicacion = @ubicacion,
-                imagen = @imagen,
-                estado_actividad = @estado_actividad,
-                organizador = @organizador
-                WHERE actividad_id = @actividad_id
-            `);
+            .execute("UpdateActividad");  // Llamamos al procedimiento almacenado
 
         if (result.rowsAffected[0] === 0) {
             return { status: 404, body: "La actividad no fue encontrada." };

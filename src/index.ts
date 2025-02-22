@@ -9,6 +9,7 @@ import { getAllBecas } from "./functions/Becas/getAllBecas";
 import { loginEmployee } from "./functions/auth/loginEmployee";
 import { encryptPasswordsEmployees } from "./functions/Employees/encryptPasswordsEmployees";
 import { getActivities } from "./functions/Actividades/getActivities";
+import { putActivityAvailable } from "./functions/Actividades/putActivityAvailable";
 
 //Actividades
 app.http('getActivities', {
@@ -16,6 +17,13 @@ app.http('getActivities', {
     authLevel: 'anonymous',
     route: "activities",
     handler: getActivities,
+});
+
+app.http('putActivityAvailable', {
+    methods: ['PUT'],  // Usamos el método PUT
+    authLevel: 'anonymous',  // Puedes cambiar el nivel de autenticación según lo que necesites
+    route: "activities/{actividad_id}",  // Ruta dinámica para el id de la actividad
+    handler: putActivityAvailable,  // Llamamos la función que maneja la actualización
 });
 
 //Preguntas Frecuentes
