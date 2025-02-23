@@ -5,9 +5,10 @@ export async function deleteActivityById(request: HttpRequest, context: Invocati
     try {
         context.log(`Http function processed request for url "${request.url}"`);
 
-        // Obtenemos los parámetros de la solicitud (empleado_id y actividad_id)
-        const empleado_id = request.query.get('empleado_id');
-        const actividad_id = request.query.get('actividad_id');
+        const body = await request.json() as { empleado_id: string, actividad_id: string };
+        const empleado_id = body.empleado_id;
+        const actividad_id = body.actividad_id;
+
 
         if (!empleado_id || !actividad_id) {
             return {
