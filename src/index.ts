@@ -4,14 +4,14 @@ import { getAllBecarios } from "./functions/Becarios/getAllBecarios";
 import { getBecarioNoCuenta } from "./functions/Becarios/getBecarioNoCuenta";
 import { getCareerById } from "./functions/Carreras/getCareerById";
 import { loginBecario } from "./functions/auth/loginBecario";
-import { encryptPasswords } from "./functions/Becarios/encryptPasswords";
 import { getAllBecas } from "./functions/Becas/getAllBecas";
 import { loginEmployee } from "./functions/auth/loginEmployee";
-import { encryptPasswordsEmployees } from "./functions/Employees/encryptPasswordsEmployees";
 import { getActivities } from "./functions/Actividades/getActivities";
 import { putActivityAvailable } from "./functions/Actividades/putActivityAvailable";
 import { deleteActivityById } from "./functions/Actividades/deleteActivityById";
 import { changePassword } from "./functions/auth/changePassword";
+import { getBecaById } from "./functions/Becas/getBecaById";
+import { getPlanillaByIdBecario } from "./functions/Planilla/getPlanillaByIdBecario";
 
 //Auth
 app.http('loginBecario', {
@@ -51,6 +51,13 @@ app.http('putActivityAvailable', {
     handler: putActivityAvailable,  // Llamamos la función que maneja la actualización
 });
 
+app.http('deleteActivityById', {
+    methods: ['DELETE'],
+    authLevel: 'anonymous',
+    route: "DeleteActivity", 
+    handler: deleteActivityById,
+});
+
 //Preguntas Frecuentes
 app.http('getFAQ', {
     methods: ['GET'],
@@ -59,14 +66,14 @@ app.http('getFAQ', {
     handler: getFAQ,
 });
 
-
-//Employees
+/*Employees
 app.http('encryptPasswordsEmployees', {
     methods: ['POST'],
     authLevel: 'anonymous',
     route: 'employees/encrypt',
     handler: encryptPasswordsEmployees,
 });
+*/
 
 //Becarios
 app.http('getAllBecarios', {
@@ -75,24 +82,14 @@ app.http('getAllBecarios', {
     route: "becarios",
     handler: getAllBecarios,
 });
-
-
-app.http('deleteActivityById', {
-    methods: ['DELETE'],
-    authLevel: 'anonymous',
-    route: "DeleteActivity", 
-    handler: deleteActivityById,
-});
-
-
-
+/*
 app.http('encryptPasswords', {
     methods: ['POST'],
     authLevel: 'anonymous',
     route: 'becarios/encrypt',
     handler: encryptPasswords,
 });
-
+*/
 app.http('getBecarioNoCuenta', {
     methods: ['POST'],
     authLevel: 'anonymous',
@@ -114,4 +111,19 @@ app.http('getAllBecas', {
     authLevel: 'anonymous',
     route: "becas",
     handler: getAllBecas,
+});
+
+app.http('getBecaById', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: 'becas/{id?}',
+    handler: getBecaById,
+});
+
+//Planilla
+app.http('getPlanillaByIdBecario', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: 'planilla/{id?}',
+    handler: getPlanillaByIdBecario,
 });
