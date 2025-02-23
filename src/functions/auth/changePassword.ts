@@ -25,7 +25,13 @@ export async function changePassword(request: HttpRequest, context: InvocationCo
             .query("SELECT persona_id FROM persona WHERE correo_institucional = @correoInstitucional");
 
         if (result.recordset.length === 0) {
-            return { status: 404, body: 'No se encontró a ningun becario o empleado.' };
+            return { 
+                status: 404,
+                body: JSON.stringify({body: 'No se encontró a ningun becario o empleado.', status: false}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
         }
 
         let personId = result.recordset[0].persona_id;
@@ -42,7 +48,13 @@ export async function changePassword(request: HttpRequest, context: InvocationCo
                 .query(`UPDATE empleado SET contrasena = @hashedPassword WHERE persona_id = ${personId}`);
 
             if (updateResult.rowsAffected[0] === 0) {
-                return { status: 500, body: 'No se pudo actualizar contrasena' };
+                return { 
+                    status: 500,
+                    body: JSON.stringify({body: 'No se pudo actualizar contrasena', status: false}),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
             }
         } else {
             console.log('Eres Estudiante')
@@ -56,10 +68,22 @@ export async function changePassword(request: HttpRequest, context: InvocationCo
             }
         }
 
-        return { status: 200, body: 'Contraseña cambiado con exito.' };
+        return { 
+            status: 200,
+            body: JSON.stringify({body: 'Contraseña cambiado con exito.', status: true}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
     } catch (error) {
         context.log(`Error: ${error}`);
-        return { status: 500, body: 'Internal Server Error' };
+        return { 
+            status: 500,
+            body: JSON.stringify({body: 'Internal Server Error', status: false}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
     }
 };
 

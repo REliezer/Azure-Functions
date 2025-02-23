@@ -9,6 +9,29 @@ import { getAllBecas } from "./functions/Becas/getAllBecas";
 import { loginEmployee } from "./functions/auth/loginEmployee";
 import { encryptPasswordsEmployees } from "./functions/Employees/encryptPasswordsEmployees";
 import { getActivities } from "./functions/Actividades/getActivities";
+import { changePassword } from "./functions/auth/changePassword";
+
+//Auth
+app.http('loginBecario', {
+    methods: ['POST'],
+    authLevel: 'anonymous',
+    route: 'auth/loginBecario',
+    handler: loginBecario,
+});
+
+app.http('loginEmployee', {
+    methods: ['POST'],
+    authLevel: 'anonymous',
+    route: 'auth/loginEmployee',
+    handler: loginEmployee,
+});
+
+app.http('changePassword', {
+    methods: ['POST'],
+    authLevel: 'anonymous',
+    route: 'auth/changePassword',
+    handler: changePassword,
+});
 
 //Actividades
 app.http('getActivities', {

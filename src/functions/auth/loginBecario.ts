@@ -19,18 +19,29 @@ export async function loginBecario(request: HttpRequest, context: InvocationCont
         // Obtener el becario con la contraseña encriptada
         let result = await pool.request()
             .input("noCuenta", sql.NVarChar, body.no_cuenta)
-            .query("SELECT contrasena FROM becario WHERE no_cuenta = @noCuenta");
+            .query("SELECT * FROM becario WHERE no_cuenta = @noCuenta");
 
         if (result.recordset.length === 0) {
-            return { status: 404, body: 'No se encontró el becario' };
+            return {
+                status: 404,
+                body: JSON.stringify({becario: 'No se encontró el becario', status: false}),                
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
         }
-
         const storedPassword = result.recordset[0].contrasena;
 
         // Comparar la contraseña ingresada con la encriptada
         const isMatch = await bcrypt.compare(body.contrasena, storedPassword);
         if (!isMatch) {
-            return { status: 401, body: 'Contraseña incorrecta' };
+            return { 
+                status: 401,
+                body: JSON.stringify({becario: 'Contraseña incorrecta', status: false}),                
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
         }
 
         // Actualizar último acceso
@@ -44,7 +55,14 @@ export async function loginBecario(request: HttpRequest, context: InvocationCont
             return { status: 500, body: 'No se pudo actualizar ultimo_acceso' };
         }
 
-        return { status: 200, body: 'Login exitoso y actualizado su ultimo acceso.' };
+        return { 
+            status: 200,
+            body: JSON.stringify({becario: result.recordset[0], status: true}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        
     } catch (error) {
         context.log(`Error: ${error}`);
         return { status: 500, body: 'Internal Server Error' };
