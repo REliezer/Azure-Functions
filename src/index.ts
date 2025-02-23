@@ -13,6 +13,7 @@ import { changePassword } from "./functions/auth/changePassword";
 import { getBecaById } from "./functions/Becas/getBecaById";
 import { getPlanillaByIdBecario } from "./functions/Planilla/getPlanillaByIdBecario";
 import { getBecarioActivity } from "./functions/Actividades/getBecarioActivity";
+import { getPersonaById } from "./functions/Persona/getPersonaById";
 
 //Auth
 app.http('loginBecario', {
@@ -135,4 +136,12 @@ app.http('getPlanillaByIdBecario', {
     authLevel: 'anonymous',
     route: 'planilla/{id?}',
     handler: getPlanillaByIdBecario,
+});
+
+//Persona
+app.http('getPersonaById', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: 'person/{id?}',
+    handler: getPersonaById,
 });

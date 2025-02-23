@@ -2,20 +2,17 @@ import { HttpRequest, HttpResponseInit, InvocationContext, output, StorageQueueO
 import { getDbConnection } from "../dbConnection";
 import * as sql from "mssql";
 
-export async function getCareerById(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+export async function getPersonaById(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
         context.log(`Http function processed request for url "${request.url}"`);
 
-        const carrera_id = request.params.id;
-        if (!carrera_id) {
+        const persona_id = request.params.id;
+        if (!persona_id) {
             return {
                 status: 400,
-                body: 'El campo carrera_id es requerido'
+                body: 'El campo persona_id es requerido'
             };
         }
-
-        context.log(`Received carrera_id: ${carrera_id}`);
-
         // Conectar a la base de datos
         let pool = await getDbConnection();
         if (!pool) {
@@ -26,21 +23,18 @@ export async function getCareerById(request: HttpRequest, context: InvocationCon
         }
         context.log("Connected to database");
 
-        // Obtiene el nombre de una carrera segun id
+        // Obtiene los detalles de una persona segun id
         let result = await pool.request()
-            .input('carreraId', sql.NChar, carrera_id)
-            .query("SELECT nombre_carrera FROM carreras WHERE carrera_id = @carreraId");
-        
-        context.log("Consulta ejecutada con éxito");
+            .input('personaId', sql.Int, persona_id)
+            .query("SELECT * FROM persona WHERE persona_id = @personaId");
 
-        // Obtener el nombre de la carrera como una cadena
-        let nombreCarrera = result.recordset.length > 0 ? result.recordset[0].nombre_carrera : 'Carrera no encontrada';
+        context.log("Consulta ejecutada con éxito");
 
         return {
             status: 200,
-            body: nombreCarrera, // Devolver solo el nombre de la carrera
+            body: JSON.stringify({person: result.recordset[0], status: true}),
             headers: {
-                'Content-Type': 'text/plain'
+                'Content-Type': 'application/json'
             }
         };
 
