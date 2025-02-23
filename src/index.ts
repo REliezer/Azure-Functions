@@ -20,22 +20,13 @@ app.http('getActivities', {
     route: "activities",
     handler: getActivities,
 });
+
 //actividades de becario disponibles
 app.http('getBecarioActivity', {
     methods: ['GET'],  // Usamos el método PUT
     authLevel: 'anonymous',  // Puedes cambiar el nivel de autenticación según lo que necesites
     route: "getBecarioActivity",  // Ruta dinámica para el id de la actividad
     handler: getBecarioActivity,  // Llamamos la función que maneja la actualización
-});
-
-
-
-//Actividad Delete
-app.http('deleteActivityById', {
-    methods: ['DELETE'],
-    authLevel: 'anonymous',
-    route: "DeleteActivity", 
-    handler: deleteActivityById,
 });
 
 app.http('putActivityAvailable', {
@@ -71,7 +62,13 @@ app.http('getAllBecarios', {
 });
 
 
-
+//Actividad Delete
+app.http('deleteActivityById', {
+    methods: ['DELETE'],
+    authLevel: 'anonymous',
+    route: "DeleteActivity", 
+    handler: deleteActivityById,
+});
 
 
 
