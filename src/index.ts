@@ -10,6 +10,7 @@ import { loginEmployee } from "./functions/auth/loginEmployee";
 import { encryptPasswordsEmployees } from "./functions/Employees/encryptPasswordsEmployees";
 import { getActivities } from "./functions/Actividades/getActivities";
 import { putActivityAvailable } from "./functions/Actividades/putActivityAvailable";
+import { deleteActivityById } from "./functions/Actividades/deleteActivityById";
 
 //Actividades
 app.http('getActivities', {
@@ -50,6 +51,15 @@ app.http('getAllBecarios', {
     route: "becarios",
     handler: getAllBecarios,
 });
+
+
+app.http('deleteActivityById', {
+    methods: ['DELETE'],
+    authLevel: 'anonymous',
+    route: "DeleteActivity", 
+    handler: deleteActivityById,
+});
+
 
 
 app.http('encryptPasswords', {
