@@ -6,8 +6,9 @@ export async function getActivities(request: HttpRequest, context: InvocationCon
            let pool = await getDbConnection();
            context.log("Connected to database");        
    
-           // Obtiene las preguntas frecuentes
-           let result = await pool.request().query("SELECT * FROM [actividades_disponibles]");
+           // Ejecutamos el procedimiento almacenado para obtener todas las actividades
+        let result = await pool.request()
+        .execute("GetAllActividades"); // Llamamos al procedimiento almacenado
            context.log("Consulta ejecutada con éxito");
    
            let responseData = {
