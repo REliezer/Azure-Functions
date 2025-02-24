@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@azure/functions": "^4.0.0",
+    "@azure/storage-blob": "^12.26.0",
     "@TYPES/MSSQL": "npm:@types/mssql@^9.1.7",
     "bcryptjs": "^3.0.2",
+    "dotenv": "^16.4.7",
     "mssql": "^10.0.4",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.20"
