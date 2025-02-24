@@ -2,17 +2,18 @@ import { HttpRequest, HttpResponseInit, InvocationContext, output, StorageQueueO
 import { getDbConnection } from "../dbConnection";
 import * as sql from "mssql";
 
-export async function getPlanillaByIdBecario(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+export async function getBecaStateById(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
         context.log(`Http function processed request for url "${request.url}"`);
 
-        const becario_id = request.params.id;
-        if (!becario_id) {
+        const estado_beca_id = request.params.id;
+        if (!estado_beca_id) {
             return {
                 status: 400,
-                body: 'El campo becario_id es requerido'
+                body: 'El campo estado_beca_id es requerido'
             };
         }
+
         // Conectar a la base de datos
         let pool = await getDbConnection();
         if (!pool) {
@@ -23,18 +24,18 @@ export async function getPlanillaByIdBecario(request: HttpRequest, context: Invo
         }
         context.log("Connected to database");
 
-        // Obtiene las planillas disponibles
         let result = await pool.request()
-            .input('becario_id', sql.NChar, becario_id)
-            .query("SELECT * FROM planilla_x_mes WHERE becario_id = @becario_id");
-
+            .input('estadoBecaId', sql.NChar, estado_beca_id)
+            .query("SELECT estado_beca FROM estado_beca WHERE estado_beca_id = @estadoBecaId");
+        
         context.log("Consulta ejecutada con éxito");
+        let nombreEstadoBeca = result.recordset.length > 0 ? result.recordset[0].estado_beca : 'Estado no disponible';
 
         return {
             status: 200,
-            body: JSON.stringify({planilla: result.recordset, status: true}),
+            body: nombreEstadoBeca,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'text/plain'
             }
         };
 

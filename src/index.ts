@@ -14,6 +14,7 @@ import { getBecaById } from "./functions/Becas/getBecaById";
 import { getPlanillaByIdBecario } from "./functions/Planilla/getPlanillaByIdBecario";
 import { getBecarioActivity } from "./functions/Actividades/getBecarioActivity";
 import { getPersonaById } from "./functions/Persona/getPersonaById";
+import { getBecaStateById } from "./functions/Becas/getBecaStateById";
 
 //Auth
 app.http('loginBecario', {
@@ -128,6 +129,13 @@ app.http('getBecaById', {
     authLevel: 'anonymous',
     route: 'becas/{id?}',
     handler: getBecaById,
+});
+
+app.http('getBecaStateById', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: 'beca_estado/{id?}',
+    handler: getBecaStateById,
 });
 
 //Planilla
