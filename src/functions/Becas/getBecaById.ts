@@ -8,12 +8,18 @@ export async function getBecaById(request: HttpRequest, context: InvocationConte
 
         const beca_id = request.params.id;
         if (!beca_id) {
-            return { status: 400, body: 'El campo beca_id es requerido' };
+            return {
+                status: 400,
+                body: 'El campo beca_id es requerido'
+            };
         }
         // Conectar a la base de datos
         let pool = await getDbConnection();
         if (!pool) {
-            return { status: 500, body: 'No se pudo conectar a la base de datos' };
+            return {
+                status: 500,
+                body: 'No se pudo conectar a la base de datos'
+            };
         }
         context.log("Connected to database");
 
@@ -25,7 +31,8 @@ export async function getBecaById(request: HttpRequest, context: InvocationConte
         context.log("Consulta ejecutada con éxito");
 
         return {
-            body: JSON.stringify(result.recordset),
+            status: 200,
+            body: JSON.stringify({beca: result.recordset[0], status: true}),
             headers: {
                 'Content-Type': 'application/json'
             }
