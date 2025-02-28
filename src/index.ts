@@ -1,3 +1,6 @@
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import { app } from "@azure/functions";
 import { getFAQ } from "./functions/FAQ/getFAQ";
 import { getAllBecarios } from "./functions/Becarios/getAllBecarios";
@@ -15,6 +18,8 @@ import { getPlanillaByIdBecario } from "./functions/Planilla/getPlanillaByIdBeca
 import { getBecarioActivity } from "./functions/Actividades/getBecarioActivity";
 import { getPersonaById } from "./functions/Persona/getPersonaById";
 import { getBecaStateById } from "./functions/Becas/getBecaStateById";
+import { storage } from "./functions/imgStorage/storage";
+import { postActivityAvailable } from "./functions/Actividades/postActivityAvailable";
 import { postInscriptionActivity } from "./functions/Actividades/postInscriptionActivity";
 
 //Auth
@@ -160,4 +165,21 @@ app.http('getPersonaById', {
     authLevel: 'anonymous',
     route: 'person/{id?}',
     handler: getPersonaById,
+});
+
+
+// Registrar la función en Azure Functions con `app.http()`
+app.http("storage", {
+    methods: ["POST"],
+    authLevel: "anonymous",
+    route: "storage/", 
+    handler: storage,
+});
+
+
+app.http("actividad", {
+    methods: ["POST"],
+    authLevel: "anonymous",
+    route: "actividad/", 
+    handler: postActivityAvailable,
 });
