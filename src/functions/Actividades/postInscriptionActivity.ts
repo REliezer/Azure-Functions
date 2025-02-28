@@ -33,7 +33,7 @@ export async function postInscriptionActivity(request: HttpRequest, context: Inv
             context.log(`Error personalizado: ${error.message}`);
             return {
                 status: 400,
-                body: "Ya estás inscripto(a) en esta actividad.",
+                body: "Ya estás inscripto(a) en esta actividad!",
             };
         } else {
             context.log(`Error: ${error}`);
