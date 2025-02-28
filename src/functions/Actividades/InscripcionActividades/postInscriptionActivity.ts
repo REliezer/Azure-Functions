@@ -1,5 +1,5 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import { getDbConnection } from "../dbConnection";
+import { getDbConnection } from "../../dbConnection";
 import * as sql from "mssql";
 
 export async function postInscriptionActivity(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {

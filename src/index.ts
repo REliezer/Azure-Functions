@@ -20,7 +20,8 @@ import { getPersonaById } from "./functions/Persona/getPersonaById";
 import { getBecaStateById } from "./functions/Becas/getBecaStateById";
 import { storage } from "./functions/imgStorage/storage";
 import { postActivityAvailable } from "./functions/Actividades/postActivityAvailable";
-import { postInscriptionActivity } from "./functions/Actividades/postInscriptionActivity";
+import { postInscriptionActivity } from "./functions/Actividades/InscripcionActividades/postInscriptionActivity";
+import { deleteInscriptionActivity } from "./functions/Actividades/InscripcionActividades/deleteInscriptionActivity";
 
 //Auth
 app.http('loginBecario', {
@@ -75,11 +76,20 @@ app.http('deleteActivityById', {
     handler: deleteActivityById,
 });
 
+
+//Inscripcion Actividades
 app.http('postInscriptionActivity', {
     methods: ['POST'],
     authLevel: 'anonymous',
     route: "inscriptionActivity",
     handler: postInscriptionActivity,
+});
+
+app.http('deleteInscriptionActivity', {
+    methods: ['DELETE'],
+    authLevel: 'anonymous',
+    route: "deleteInscriptionActivity",
+    handler: deleteInscriptionActivity,
 });
 
 //Preguntas Frecuentes
