@@ -15,6 +15,7 @@ import { getPlanillaByIdBecario } from "./functions/Planilla/getPlanillaByIdBeca
 import { getBecarioActivity } from "./functions/Actividades/getBecarioActivity";
 import { getPersonaById } from "./functions/Persona/getPersonaById";
 import { getBecaStateById } from "./functions/Becas/getBecaStateById";
+import { postInscriptionActivity } from "./functions/Actividades/postInscriptionActivity";
 
 //Auth
 app.http('loginBecario', {
@@ -67,6 +68,13 @@ app.http('deleteActivityById', {
     authLevel: 'anonymous',
     route: "DeleteActivity", 
     handler: deleteActivityById,
+});
+
+app.http('postInscriptionActivity', {
+    methods: ['POST'],
+    authLevel: 'anonymous',
+    route: "inscriptionActivity",
+    handler: postInscriptionActivity,
 });
 
 //Preguntas Frecuentes
