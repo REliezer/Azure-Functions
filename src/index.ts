@@ -19,6 +19,7 @@ import { getBecarioActivity } from "./functions/Actividades/getBecarioActivity";
 import { getPersonaById } from "./functions/Persona/getPersonaById";
 import { getBecaStateById } from "./functions/Becas/getBecaStateById";
 import { storage } from "./functions/imgStorage/storage";
+import { postActivityAvailable } from "./functions/Actividades/postActivityAvailable";
 
 //Auth
 app.http('loginBecario', {
@@ -165,4 +166,12 @@ app.http("storage", {
     authLevel: "anonymous",
     route: "storage/", 
     handler: storage,
+});
+
+
+app.http("actividad", {
+    methods: ["POST"],
+    authLevel: "anonymous",
+    route: "actividad/", 
+    handler: postActivityAvailable,
 });
