@@ -22,6 +22,7 @@ import { storage } from "./functions/imgStorage/storage";
 import { postActivityAvailable } from "./functions/Actividades/postActivityAvailable";
 import { postInscriptionActivity } from "./functions/Actividades/InscripcionActividades/postInscriptionActivity";
 import { deleteInscriptionActivity } from "./functions/Actividades/InscripcionActividades/deleteInscriptionActivity";
+import { getParticipantesByActividadId } from "./functions/ActividadesRealizadas/getParticipantesByActividadId";
 
 //Auth
 app.http('loginBecario', {
@@ -90,6 +91,13 @@ app.http('deleteInscriptionActivity', {
     authLevel: 'anonymous',
     route: "deleteInscriptionActivity",
     handler: deleteInscriptionActivity,
+});
+
+app.http('getParticipantesByActividadId', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: "participantsActivity/{id?}",
+    handler: getParticipantesByActividadId,
 });
 
 //Preguntas Frecuentes
