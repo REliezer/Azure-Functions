@@ -25,6 +25,7 @@ import { deleteInscriptionActivity } from "./functions/Actividades/InscripcionAc
 import { getParticipantesByActividadId } from "./functions/ActividadesRealizadas/getParticipantesByActividadId";
 import { putAsistencia } from "./functions/Actividades/InscripcionActividades/putAsistencia";
 import { getComunicados } from "./functions/Comunicados/getComunicados";
+import { getReportByNoCuenta } from "./functions/Reportes/getReportByNoCuenta";
 
 
 //Auth
@@ -80,6 +81,12 @@ app.http('deleteActivityById', {
     handler: deleteActivityById,
 });
 
+app.http("actividad", {
+    methods: ["POST"],
+    authLevel: "anonymous",
+    route: "actividad/", 
+    handler: postActivityAvailable,
+});
 
 //Inscripcion Actividades
 app.http('postInscriptionActivity', {
@@ -204,12 +211,12 @@ app.http("storage", {
     handler: storage,
 });
 
-
-app.http("actividad", {
-    methods: ["POST"],
-    authLevel: "anonymous",
-    route: "actividad/", 
-    handler: postActivityAvailable,
+//Reportes
+app.http('getReportByNoCuenta', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: 'report/{id}',
+    handler: getReportByNoCuenta,
 });
 
 
