@@ -24,6 +24,8 @@ import { postInscriptionActivity } from "./functions/Actividades/InscripcionActi
 import { deleteInscriptionActivity } from "./functions/Actividades/InscripcionActividades/deleteInscriptionActivity";
 import { getParticipantesByActividadId } from "./functions/ActividadesRealizadas/getParticipantesByActividadId";
 import { putAsistencia } from "./functions/Actividades/InscripcionActividades/putAsistencia";
+import { getComunicados } from "./functions/Comunicados/getComunicados";
+
 
 //Auth
 app.http('loginBecario', {
@@ -208,4 +210,14 @@ app.http("actividad", {
     authLevel: "anonymous",
     route: "actividad/", 
     handler: postActivityAvailable,
+});
+
+
+
+//obtenemos los comunicados ordenados por categoria de afiche...
+app.http('getComunicados', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: "getComunicados/",
+    handler: getComunicados,
 });
