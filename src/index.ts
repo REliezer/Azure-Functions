@@ -23,6 +23,7 @@ import { postActivityAvailable } from "./functions/Actividades/postActivityAvail
 import { postInscriptionActivity } from "./functions/Actividades/InscripcionActividades/postInscriptionActivity";
 import { deleteInscriptionActivity } from "./functions/Actividades/InscripcionActividades/deleteInscriptionActivity";
 import { getParticipantesByActividadId } from "./functions/ActividadesRealizadas/getParticipantesByActividadId";
+import { putAsistencia } from "./functions/Actividades/InscripcionActividades/putAsistencia";
 
 //Auth
 app.http('loginBecario', {
@@ -98,6 +99,13 @@ app.http('getParticipantesByActividadId', {
     authLevel: 'anonymous',
     route: "participantsActivity/{id?}",
     handler: getParticipantesByActividadId,
+});
+
+app.http('putAsistencia', {
+    methods: ['PUT'],
+    authLevel: 'anonymous',
+    route: "updateAttendanceActivity",
+    handler: putAsistencia,
 });
 
 //Preguntas Frecuentes
