@@ -29,7 +29,9 @@ export async function getComunicados(request: HttpRequest, context: InvocationCo
                 nombre_afiche: comunicado.nombre_afiche,
                 fecha_actividad: comunicado.fecha_actividad,
                 url_afiche: comunicado.url_afiche,
-                nombre_categoria: comunicado.nombre_categoria
+                nombre_categoria: comunicado.nombre_categoria,
+                categoria_afiche_id: comunicado.categoria_afiche_id
+
 
 
             });
