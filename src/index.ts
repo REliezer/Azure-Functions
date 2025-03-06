@@ -26,6 +26,7 @@ import { getParticipantesByActividadId } from "./functions/ActividadesRealizadas
 import { putAsistencia } from "./functions/Actividades/InscripcionActividades/putAsistencia";
 import { getComunicados } from "./functions/Comunicados/getComunicados";
 import { getReportByNoCuenta } from "./functions/Reportes/getReportByNoCuenta";
+import { getInfoBecarioReport } from "./functions/Reportes/getInfoBecarioReport";
 
 
 //Auth
@@ -219,6 +220,12 @@ app.http('getReportByNoCuenta', {
     handler: getReportByNoCuenta,
 });
 
+app.http('getInfoBecarioReport', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: 'report/infoBecario/{id}',
+    handler: getInfoBecarioReport,
+});
 
 
 //obtenemos los comunicados ordenados por categoria de afiche...
