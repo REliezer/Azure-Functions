@@ -3,6 +3,8 @@ import { getDbConnection } from "../../dbConnection";
 import * as sql from "mssql";
 
 export async function postInscriptionActivity(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+    const customErrors = [50000, 50001, 50002, 50003];
+
     try {
         context.log(`Http function processed request for url "${request.url}"`);
 
@@ -11,6 +13,14 @@ export async function postInscriptionActivity(request: HttpRequest, context: Inv
             no_cuenta: string
         };
 
+        // Validar datos de entrada
+        if (!body.actividad_id || !body.no_cuenta) {
+            return {
+                status: 400,
+                body: JSON.stringify({ error: "Todos los campos son obligatorios." })
+            };
+        }
+
         let pool = await getDbConnection();
         context.log("Connected to database");
 
@@ -18,7 +28,7 @@ export async function postInscriptionActivity(request: HttpRequest, context: Inv
         let result = await pool.request()
             .input("actividad_id", sql.VarChar, body.actividad_id)
             .input("no_cuenta", sql.NVarChar, body.no_cuenta)
-            .execute("insert_nueva_inscripcion_act");  // Llamamos al procedimiento almacenado
+            .execute("insert_nueva_inscripcion_act");
 
         if (result.rowsAffected[0] === 0) {
             return { status: 404, body: "Fallo la inscripción en la actividad." };
@@ -26,14 +36,14 @@ export async function postInscriptionActivity(request: HttpRequest, context: Inv
 
         return { status: 200, body: JSON.stringify({ message: "Inscripcion a la actividad exitosamente." })};
     } catch (error) {        
-        if (error instanceof sql.RequestError && (error.number === 50000 || error.number === 50001)) {
+        if (error instanceof sql.RequestError && typeof error.number === "number" && customErrors.includes(error.number)) {
             context.log(`Error personalizado: ${error.message}`);
             return {
                 status: 400,
                 body: JSON.stringify({ error: error.message })
             };
         } else {
-            context.log(`Error: ${error}`);
+            context.log(`Error desconocido: ${JSON.stringify(error, Object.getOwnPropertyNames(error))}`);
             return {
                 status: 500,
                 body: JSON.stringify({ error: 'Internal Server Error' })
