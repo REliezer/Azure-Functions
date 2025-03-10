@@ -31,7 +31,10 @@ export async function getParticipantesByActividadId(request: HttpRequest, contex
             .execute("participantes_actividad");  // Llamamos al procedimiento almacenado
 
         if (result.rowsAffected[0] === 0) {
-            return { status: 404, body: "No hay participantes en esta actividad aún." };
+            return {
+                status: 404,
+                body: JSON.stringify({ error: "No hay participantes en esta actividad aún."}),
+            };
         }
 
         let responseData = JSON.stringify(result.recordset);
@@ -42,13 +45,13 @@ export async function getParticipantesByActividadId(request: HttpRequest, contex
             context.log(`Error personalizado: ${error.message}`);
             return {
                 status: 400,
-                body: "No se encontró la actividad con el ID proporcionado.",
+                body: JSON.stringify({ error: error.message }),
             };
         } else {
             context.log(`Error: ${error}`);
             return {
                 status: 500,
-                body: 'Internal Server Error'
+                body: JSON.stringify({ error: 'Internal Server Error' }),
             };
         }
     }

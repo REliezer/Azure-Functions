@@ -55,7 +55,7 @@ export async function putAsistencia(request: HttpRequest, context: InvocationCon
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
                 message: "La asistencia a la actividad fue registrada exitosamente.",
-                data: result.recordset // Opcional: incluir datos adicionales
+                data: result.recordset
             })
         };
     } catch (error) {
