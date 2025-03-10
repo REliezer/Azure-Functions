@@ -82,7 +82,7 @@ app.http('deleteActivityById', {
     handler: deleteActivityById,
 });
 
-app.http("actividad", {
+app.http("postActivityAvailable", {
     methods: ["POST"],
     authLevel: "anonymous",
     route: "actividad/", 
