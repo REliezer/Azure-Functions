@@ -27,6 +27,7 @@ import { putAsistencia } from "./functions/Actividades/InscripcionActividades/pu
 import { getComunicados } from "./functions/Comunicados/getComunicados";
 import { getReportByNoCuenta } from "./functions/Reportes/getReportByNoCuenta";
 import { getInfoBecarioReport } from "./functions/Reportes/getInfoBecarioReport";
+import { sendEmail } from "./functions/Email/sendEmail";
 
 
 //Auth
@@ -234,4 +235,12 @@ app.http('getComunicados', {
     authLevel: 'anonymous',
     route: "getComunicados/",
     handler: getComunicados,
+});
+
+// Registrar la API en Azure Functions
+app.http("sendEmail", {
+    methods: ["POST"],
+    authLevel: "anonymous",
+    route: "sendEmail",
+    handler: sendEmail,
 });

@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@azure/functions": "^4.0.0",
+    "@azure/identity": "^4.8.0",
     "@azure/storage-blob": "^12.26.0",
+    "@microsoft/microsoft-graph-client": "^3.0.7",
     "@TYPES/MSSQL": "npm:@types/mssql@^9.1.7",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
