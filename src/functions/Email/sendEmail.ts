@@ -31,6 +31,7 @@ export async function sendEmail(req: HttpRequest, context: InvocationContext): P
         const message = {
             message: {
                 subject: "Correo desde Azure Function con Microsoft Graph",
+                
                 body: { contentType: "Text", content: body.cuerpo },
                 toRecipients: [{ emailAddress: { address: body.correo } }],
             },

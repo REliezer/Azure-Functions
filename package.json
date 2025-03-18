@@ -20,11 +20,13 @@
     "dotenv": "^16.4.7",
     "mssql": "^10.0.4",
     "reflect-metadata": "^0.2.2",
+    "resend": "^4.1.2",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/jest": "^29.5.14",
+    "@types/microsoft-graph": "^2.40.0",
     "@types/mssql": "^9.1.7",
     "@types/node": "^20.x",
     "jest": "^29.7.0",
