@@ -28,6 +28,8 @@ import { getComunicados } from "./functions/Comunicados/getComunicados";
 import { getReportByNoCuenta } from "./functions/Reportes/getReportByNoCuenta";
 import { getInfoBecarioReport } from "./functions/Reportes/getInfoBecarioReport";
 import { sendEmail } from "./functions/Email/sendEmail";
+import { encryptPasswords } from "./functions/Becarios/encryptPasswords";
+import { encryptPasswordsEmployees } from "./functions/Employees/encryptPasswordsEmployees";
 
 
 //Auth
@@ -127,14 +129,14 @@ app.http('getFAQ', {
     handler: getFAQ,
 });
 
-/*Employees
+//Employees
 app.http('encryptPasswordsEmployees', {
     methods: ['POST'],
     authLevel: 'anonymous',
     route: 'employees/encrypt',
     handler: encryptPasswordsEmployees,
 });
-*/
+
 
 //Becarios
 app.http('getAllBecarios', {
@@ -143,14 +145,14 @@ app.http('getAllBecarios', {
     route: "becarios",
     handler: getAllBecarios,
 });
-/*
+
 app.http('encryptPasswords', {
     methods: ['POST'],
     authLevel: 'anonymous',
     route: 'becarios/encrypt',
     handler: encryptPasswords,
 });
-*/
+
 app.http('getBecarioNoCuenta', {
     methods: ['POST'],
     authLevel: 'anonymous',
