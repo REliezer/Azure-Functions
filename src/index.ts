@@ -28,6 +28,8 @@ import { getComunicados } from "./functions/Comunicados/getComunicados";
 import { getReportByNoCuenta } from "./functions/Reportes/getReportByNoCuenta";
 import { getInfoBecarioReport } from "./functions/Reportes/getInfoBecarioReport";
 import { sendEmail } from "./functions/Email/sendEmail";
+import { sendEmailACS } from "./functions/Email/sendEmailACS";
+
 import { encryptPasswords } from "./functions/Becarios/encryptPasswords";
 import { encryptPasswordsEmployees } from "./functions/Employees/encryptPasswordsEmployees";
 
@@ -245,4 +247,11 @@ app.http("sendEmail", {
     authLevel: "anonymous",
     route: "sendEmail",
     handler: sendEmail,
+});
+
+app.http("sendEmailACS", {
+    methods: ["POST"],
+    authLevel: "anonymous",
+    route: "sendEmailACS",
+    handler: sendEmailACS,
 });
