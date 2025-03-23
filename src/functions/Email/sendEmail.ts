@@ -68,8 +68,9 @@ export async function sendEmail(req: HttpRequest, context: InvocationContext): P
                     });
 
         // Descargar el PDF y convertirlo en un archivo adjunto
-        const pdfBuffer = Buffer.from(await fetch(body.pdfURL).then(res => res.arrayBuffer()));
-
+        const arrayBuffer = await fetch(body.pdfURL).then(res => res.arrayBuffer());
+        const pdfBuffer = Buffer.from(new Uint8Array(arrayBuffer));
+        
         // Configurar el correo con los parámetros necesarios
         const mailOptions = {
             from: process.env.CORREO,
