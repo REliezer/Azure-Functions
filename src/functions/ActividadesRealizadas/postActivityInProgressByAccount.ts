@@ -21,7 +21,13 @@ export async function postActivityInProgressByAccount(request: HttpRequest, cont
             .input("no_cuenta", sql.VarChar, no_cuenta)
             .execute("sp_ActividadEnProcesoPorBecario"); // Llamamos al procedimiento almacenado
         context.log("Consulta ejecutada con éxito");
-
+        
+        if(!result  || result ==null){
+            return {
+                status: 409,
+                body: 'Internal Server Error'
+            }
+        }
         let responseData = {
             actividades: result.recordset
         };
