@@ -9,7 +9,6 @@ export async function getInfoSeguimientobyNoCuenta(request: HttpRequest, context
         if (!no_cuenta) {
             return { status: 400, body: "Falta el parámetro 'no_cuenta'." };
         }
-        console.log('body.no_cuenta', no_cuenta);
 
         let pool = await getDbConnection();
         if (!pool) {
@@ -17,7 +16,6 @@ export async function getInfoSeguimientobyNoCuenta(request: HttpRequest, context
         }
         context.log("Connected to database");
 
-        // Obtener la información de seguimiento
         let infoSeguimiento = await pool.request()
             .input("no_cuenta", sql.NVarChar, no_cuenta)
             .execute("get_info_becario_seguimiento_by_noCuenta");
@@ -29,11 +27,10 @@ export async function getInfoSeguimientobyNoCuenta(request: HttpRequest, context
                 
             };
         }
-        console.log('infoSeguimiento', infoSeguimiento);
-        // Retornar respuesta
+
         return { 
             status: 200, 
-            body: JSON.stringify(infoSeguimiento.recordset)
+            body: JSON.stringify(infoSeguimiento.recordset[0])
         };
     } catch (error) {
         context.log("Error al obtener info de seguimiento:", error);
