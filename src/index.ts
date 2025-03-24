@@ -34,6 +34,7 @@ import { encryptPasswordsEmployees } from "./functions/Employees/encryptPassword
 import { postActivityByAccount } from "./functions/ActividadesRealizadas/postActivityByAccount";
 import { postActivityInProgressByAccount } from "./functions/ActividadesRealizadas/postActivityInProgressByAccount";
 import { getInfoSeguimientobyNoCuenta } from "./functions/SeguimientoAcademico/getInfoSeguimientobyNoCuenta";
+import { putStateBeca } from "./functions/SeguimientoAcademico/putStateBeca";
 
 //Auth
 app.http('loginBecario', {
@@ -279,4 +280,11 @@ app.http('getInfoSeguimientobyNoCuenta', {
     authLevel: 'anonymous',
     route: "getInfoSeguimientobyNoCuenta/{no_cuenta}",
     handler: getInfoSeguimientobyNoCuenta,
+});
+
+app.http('putStateBeca', {
+    methods: ['PUT'],
+    authLevel: 'anonymous',
+    route: "putStateBeca",
+    handler: putStateBeca,
 });
