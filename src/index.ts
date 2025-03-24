@@ -32,6 +32,8 @@ import { sendEmailACS } from "./functions/Email/sendEmailACS";
 
 import { encryptPasswords } from "./functions/Becarios/encryptPasswords";
 import { encryptPasswordsEmployees } from "./functions/Employees/encryptPasswordsEmployees";
+import { postActivityByAccount } from "./functions/ActividadesRealizadas/postActivityByAccount";
+import { postActivityInProgressByAccount } from "./functions/ActividadesRealizadas/postActivityInProgressByAccount";
 
 
 //Auth
@@ -71,6 +73,22 @@ app.http('getBecarioActivity', {
     authLevel: 'anonymous',
     route: "getBecarioActivity",
         handler: getBecarioActivity,
+});
+
+//Actividades a las que asistio el becario por numero de cuenta
+app.http('postActivityByAccount', {
+    methods: ['POST'], 
+    authLevel: 'anonymous',
+    route: "postActivityByAccount",
+        handler: postActivityByAccount,
+});
+
+//Actividades En Progreso con asistencia 0 y actividad fecha> fecha inscripcion
+app.http('postActivityInProgressByAccount', {
+    methods: ['POST'], 
+    authLevel: 'anonymous',
+    route: "postActivityInProgressByAccount",
+        handler: postActivityInProgressByAccount,
 });
 
 app.http('putActivityAvailable', {
