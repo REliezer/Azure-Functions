@@ -35,6 +35,7 @@ import { postActivityByAccount } from "./functions/ActividadesRealizadas/postAct
 import { postActivityInProgressByAccount } from "./functions/ActividadesRealizadas/postActivityInProgressByAccount";
 import { getInfoSeguimientobyNoCuenta } from "./functions/SeguimientoAcademico/getInfoSeguimientobyNoCuenta";
 import { putStateBeca } from "./functions/SeguimientoAcademico/putStateBeca";
+import { postReporteSeguimiento } from "./functions/SeguimientoAcademico/postReporteSeguimiento";
 
 //Auth
 app.http('loginBecario', {
@@ -287,4 +288,11 @@ app.http('putStateBeca', {
     authLevel: 'anonymous',
     route: "putStateBeca",
     handler: putStateBeca,
+});
+
+app.http('postReporteSeguimiento', {
+    methods: ['POST'],
+    authLevel: 'anonymous',
+    route: "reporteSeguimiento",
+    handler: postReporteSeguimiento,
 });
