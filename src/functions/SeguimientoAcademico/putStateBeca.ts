@@ -26,9 +26,9 @@ export async function putStateBeca(request: HttpRequest, context: InvocationCont
             return { status: 404, body: "No se encontró la beca." };
         }
 
-        return { status: 200, body: "Estado de la beca actualizado correctamente." };
+        return { status: 200, body: JSON.stringify("Estado de la beca actualizado correctamente.") };
     } catch (error) {
         context.log("Error al actualizar el estado de la beca:", error);
-        return { status: 404, body: "Error al actualizar el estado de la beca." };
+        return { status: 404, body: JSON.stringify("Error al actualizar el estado de la beca.") };
     }
 }  
