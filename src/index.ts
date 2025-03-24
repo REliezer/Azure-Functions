@@ -29,12 +29,11 @@ import { getReportByNoCuenta } from "./functions/Reportes/getReportByNoCuenta";
 import { getInfoBecarioReport } from "./functions/Reportes/getInfoBecarioReport";
 import { sendEmail } from "./functions/Email/sendEmail";
 import { sendEmailACS } from "./functions/Email/sendEmailACS";
-
 import { encryptPasswords } from "./functions/Becarios/encryptPasswords";
 import { encryptPasswordsEmployees } from "./functions/Employees/encryptPasswordsEmployees";
 import { postActivityByAccount } from "./functions/ActividadesRealizadas/postActivityByAccount";
 import { postActivityInProgressByAccount } from "./functions/ActividadesRealizadas/postActivityInProgressByAccount";
-
+import { getInfoSeguimientobyNoCuenta } from "./functions/SeguimientoAcademico/getInfoSeguimientobyNoCuenta";
 
 //Auth
 app.http('loginBecario', {
@@ -272,4 +271,12 @@ app.http("sendEmailACS", {
     authLevel: "anonymous",
     route: "sendEmailACS",
     handler: sendEmailACS,
+});
+
+//Seguimiento Academico
+app.http('getInfoSeguimientobyNoCuenta', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: "getInfoSeguimientobyNoCuenta/{no_cuenta}",
+    handler: getInfoSeguimientobyNoCuenta,
 });
