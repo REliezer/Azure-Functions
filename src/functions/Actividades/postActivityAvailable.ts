@@ -47,7 +47,7 @@ export async function postActivityAvailable(request: HttpRequest, context: Invoc
             .input("organizador", sql.NVarChar, body.organizador)
             .execute("sp_insertar_actividad");
 
-            console.log(result);
+           // console.log(result);
         // Respuesta exitosa
         return {
             status: 201,
