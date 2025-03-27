@@ -36,6 +36,8 @@ import { postActivityInProgressByAccount } from "./functions/ActividadesRealizad
 import { getInfoSeguimientobyNoCuenta } from "./functions/SeguimientoAcademico/getInfoSeguimientobyNoCuenta";
 import { putStateBeca } from "./functions/SeguimientoAcademico/putStateBeca";
 import { postReporteSeguimiento } from "./functions/SeguimientoAcademico/postReporteSeguimiento";
+import { putPreguntas } from "./functions/FAQ/putFaq";
+import { postFaq } from "./functions/FAQ/postFaq";
 
 //Auth
 app.http('loginBecario', {
@@ -148,6 +150,20 @@ app.http('getFAQ', {
     authLevel: 'anonymous',
     route: "faq",
     handler: getFAQ,
+});
+
+app.http('putFaq', {
+    methods: ['PUT'],
+    authLevel: 'anonymous',
+    route: "putFaq",
+    handler: putPreguntas,
+});
+
+app.http('postFaq', {
+    methods: ['POST'],
+    authLevel: 'anonymous',
+    route: "postFaq",
+    handler: postFaq,
 });
 
 //Employees
