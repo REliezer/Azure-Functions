@@ -167,12 +167,12 @@ app.http('postFaq', {
 });
 
 //Employees
-// app.http('encryptPasswordsEmployees', {
-//     methods: ['POST'],
-//     authLevel: 'anonymous',
-//     route: 'employees/encrypt',
-//     handler: encryptPasswordsEmployees,
-// });
+//app.http('encryptPasswordsEmployees', {
+//    methods: ['POST'],
+//    authLevel: 'anonymous',
+//    route: 'employees/encrypt',
+//    handler: encryptPasswordsEmployees,
+//});
 
 
 //Becarios
@@ -183,12 +183,12 @@ app.http('getAllBecarios', {
     handler: getAllBecarios,
 });
 
-// app.http('encryptPasswords', {
-//     methods: ['POST'],
-//     authLevel: 'anonymous',
-//     route: 'becarios/encrypt',
-//     handler: encryptPasswords,
-// });
+//app.http('encryptPasswords', {
+//    methods: ['POST'],
+//    authLevel: 'anonymous',
+//    route: 'becarios/encrypt',
+//    handler: encryptPasswords,
+//});
 
 app.http('getBecarioNoCuenta', {
     methods: ['POST'],

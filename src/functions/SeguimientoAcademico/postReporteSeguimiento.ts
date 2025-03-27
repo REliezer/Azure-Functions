@@ -66,7 +66,7 @@ export async function postReporteSeguimiento(request: HttpRequest, context: Invo
             context.log(`Error desconocido: ${JSON.stringify(error, Object.getOwnPropertyNames(error))}`);
             return {
                 status: 500,
-                body: JSON.stringify({ error: 'Internal Server Error' })
+                body: JSON.stringify({ error: `Error desconocido: ${JSON.stringify(error, Object.getOwnPropertyNames(error))}` })
             };
         }
     }
