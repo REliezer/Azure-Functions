@@ -35,7 +35,7 @@ export async function postFaq(request: HttpRequest, context: InvocationContext):
             .input("respuesta", sql.NVarChar, body.respuesta)
             .execute("sp_preguntasFrecuentes");
 
-           // console.log(result);
+           
         // Respuesta exitosa
         return {
             status: 201,
