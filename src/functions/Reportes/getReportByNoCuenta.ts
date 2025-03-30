@@ -25,10 +25,9 @@ export async function getReportByNoCuenta(request: HttpRequest, context: Invocat
         }
         context.log("Connected to database");
 
-        // Ejecutar el procedimiento almacenado
         let result = await pool.request()
             .input("no_cuenta", sql.VarChar, no_cuenta)
-            .execute("reportes_becario_by_no_cuenta");  // Llamamos al procedimiento almacenado
+            .execute("reportes_becario_by_no_cuenta");
 
         if (result.rowsAffected[0] === 0) {
             return { status: 404, body: "No hay reportes para este becario aún." };

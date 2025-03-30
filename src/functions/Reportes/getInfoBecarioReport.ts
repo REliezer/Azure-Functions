@@ -1,9 +1,13 @@
 import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { getDbConnection } from "../dbConnection";
+import { authMiddleware } from "../auth/authMiddleware";
 import * as sql from "mssql";
 
 export async function getInfoBecarioReport(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
+        const authResponse = await authMiddleware(request, context, [1, 3]);
+        if (authResponse) return authResponse;
+
         context.log(`Http function processed request for url "${request.url}"`);
 
         const no_cuenta = request.params.id;
@@ -23,10 +27,9 @@ export async function getInfoBecarioReport(request: HttpRequest, context: Invoca
         }
         context.log("Connected to database");
 
-        // Ejecutar el procedimiento almacenado
         let result = await pool.request()
             .input("no_cuenta", sql.NVarChar, no_cuenta)
-            .execute("informacion_becario_planilla_by_cuenta");  // Llamamos al procedimiento almacenado
+            .execute("informacion_becario_planilla_by_cuenta");
 
         if (result.rowsAffected[0] === 0) {
             return { status: 404, body: "No hay ningun becario con este no_cuenta." };

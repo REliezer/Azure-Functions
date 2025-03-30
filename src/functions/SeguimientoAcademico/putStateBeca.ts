@@ -1,10 +1,14 @@
 import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { getDbConnection } from "../dbConnection";
+import { authMiddleware } from "../auth/authMiddleware";
 import * as sql from "mssql";
 
 export async function putStateBeca(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     context.log("Procesando solicitud para actualizar el estado de la beca...");
     try {
+        const authResponse = await authMiddleware(request, context, [1, 3]);
+        if (authResponse) return authResponse;
+
         const body = await request.json() as { no_cuenta?: string; estado_beca_id?: string };
 
         if (!body.no_cuenta || !body.estado_beca_id) {

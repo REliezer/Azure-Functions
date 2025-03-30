@@ -1,11 +1,15 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { EmailClient, EmailMessage } from "@azure/communication-email";
+import { authMiddleware } from "../auth/authMiddleware";
 import * as fs from "fs";
 import fetch from "node-fetch"; // Para descargar archivos remotos
 
 // Función principal
-export async function sendEmailACS(req: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+export async function sendEmailACS(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
+        const authResponse = await authMiddleware(request, context, [1, 3]);
+        if (authResponse) return authResponse;
+
         // Obtener la conexión de ACS desde variables de entorno
         const connectionString = process.env.ACS_CONNECTION_STRING;
         if (!connectionString) throw new Error("La variable de entorno ACS_CONNECTION_STRING no está configurada.");
@@ -13,7 +17,7 @@ export async function sendEmailACS(req: HttpRequest, context: InvocationContext)
         const emailClient = new EmailClient(connectionString);
 
         // Obtener datos del body
-        const body = await req.json() as {
+        const body = await request.json() as {
             to: string,
             subject: string,
             body: string,
@@ -55,15 +59,6 @@ export async function sendEmailACS(req: HttpRequest, context: InvocationContext)
 				</body>
 			</html>`,
             },
-            /*
-            attachments: [
-                {
-                    name: body.attachments?.[0]?.name || "",
-                    contentType: "application/pdf",
-                    contentInBase64: (await (await fetch(body.attachments)).buffer()).toString("base64")
-                }
-            ]
-            */
         };
 
         // Si hay archivos adjuntos, descargarlos si es una URL
@@ -74,7 +69,6 @@ export async function sendEmailACS(req: HttpRequest, context: InvocationContext)
                 }
 
                 let fileContentBase64 = att.content;
-
                 // Si es una URL, descargar el archivo y convertirlo a base64
                 if (att.content.startsWith("https")) {
                     const response = await fetch(att.content);

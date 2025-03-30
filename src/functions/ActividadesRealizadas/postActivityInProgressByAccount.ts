@@ -1,4 +1,4 @@
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { getDbConnection } from "../dbConnection";
 import * as sql from "mssql";
 
@@ -8,7 +8,6 @@ export async function postActivityInProgressByAccount(request: HttpRequest, cont
         let pool = await getDbConnection();
         context.log("Connected to database");
 
-        // Ejecutamos el procedimiento almacenado para obtener todas las actividades
         const body = await request.json() as { no_cuenta: string };
         const no_cuenta = body.no_cuenta;
         if (!no_cuenta) {
@@ -19,10 +18,10 @@ export async function postActivityInProgressByAccount(request: HttpRequest, cont
         }
         let result = await pool.request()
             .input("no_cuenta", sql.VarChar, no_cuenta)
-            .execute("sp_ActividadEnProcesoPorBecario"); // Llamamos al procedimiento almacenado
+            .execute("sp_ActividadEnProcesoPorBecario");
         context.log("Consulta ejecutada con éxito");
-        
-        if(!result  || result ==null){
+
+        if (!result || result == null) {
             return {
                 status: 409,
                 body: 'Internal Server Error'

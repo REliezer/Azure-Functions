@@ -1,13 +1,16 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { getDbConnection } from "../dbConnection";
+import { authMiddleware } from "../auth/authMiddleware";
 import * as sql from "mssql";
 import { FaqValidator } from "./ValidacionesPreguntas/FAQValidatorBody";
 
 export async function postFaq(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
+        const authResponse = await authMiddleware(request, context, [1, 3]);
+        if (authResponse) return authResponse;
+
         context.log(`Http function processed request for url "${request.url}"`);
 
-        // Parsear el cuerpo de la solicitud
         const body = await request.json() as {
             pregunta: string;
             respuesta: string;   
@@ -25,24 +28,20 @@ export async function postFaq(request: HttpRequest, context: InvocationContext):
                 };
             }
 
-        // Conectar a la base de datos
         let pool = await getDbConnection();
         context.log("Connected to database");
 
-        // Ejecutar el procedimiento almacenado
         let result = await pool.request()
             .input("pregunta", sql.NVarChar, body.pregunta)
             .input("respuesta", sql.NVarChar, body.respuesta)
             .execute("sp_preguntasFrecuentes");
 
-           
-        // Respuesta exitosa
         return {
             status: 201,
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 message: "La pregunta fue Creada exitosamente.",
-                data: result // Opcional: incluir datos adicionales
+                data: result
             })
         };
     } catch (error) {

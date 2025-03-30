@@ -1,10 +1,12 @@
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { getDbConnection } from "../../dbConnection";
+import { authMiddleware } from "../../auth/authMiddleware";
 import * as sql from "mssql";
 
 export async function putAsistencia(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
-        context.log(`Http function processed request for url "${request.url}"`);
+        const authResponse = await authMiddleware(request, context, [1, 3]);
+        if (authResponse) return authResponse;
 
         const body = await request.json() as {
             actividad_id: string;
@@ -14,7 +16,6 @@ export async function putAsistencia(request: HttpRequest, context: InvocationCon
         if (!body.actividad_id) {
             return {
                 status: 400,
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: "El campo 'actividad_id' es requerido." })
             };
         }
@@ -22,7 +23,6 @@ export async function putAsistencia(request: HttpRequest, context: InvocationCon
         if (!body.no_cuenta) {
             return {
                 status: 400,
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: "El campo 'no_cuenta' es requerido." })
             };
         }
@@ -42,7 +42,7 @@ export async function putAsistencia(request: HttpRequest, context: InvocationCon
             return {
                 status: 404,
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     message: "La actividad no fue encontrada.",
                     actividad_id: body.actividad_id
                 })
@@ -53,7 +53,7 @@ export async function putAsistencia(request: HttpRequest, context: InvocationCon
         return {
             status: 200,
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 message: "La asistencia a la actividad fue registrada exitosamente.",
                 data: result.recordset
             })
@@ -67,7 +67,7 @@ export async function putAsistencia(request: HttpRequest, context: InvocationCon
         return {
             status: 500,
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 message: errorMessage
             })
         };

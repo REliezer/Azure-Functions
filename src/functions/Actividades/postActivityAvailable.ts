@@ -1,10 +1,14 @@
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { getDbConnection } from "../dbConnection";
+import { authMiddleware } from "../auth/authMiddleware";
 import * as sql from "mssql";
 import { ActivityValidator } from "./ValidacionesActividades/ActivityValidatorBody";
 
 export async function postActivityAvailable(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
+        const authResponse = await authMiddleware(request, context, [1, 3]);
+        if (authResponse) return authResponse;
+
         context.log(`Http function processed request for url "${request.url}"`);
 
         // Parsear el cuerpo de la solicitud
@@ -21,15 +25,15 @@ export async function postActivityAvailable(request: HttpRequest, context: Invoc
 
         // Validar los datos de entrada usando el validador
         const validationResult = ActivityValidator.validate(body);
-            if (!validationResult.valid) {
-                return {
-                    status: 400,
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        message: validationResult.message
-                    })
-                };
-            }
+        if (!validationResult.valid) {
+            return {
+                status: 400,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    message: validationResult.message
+                })
+            };
+        }
 
         // Conectar a la base de datos
         let pool = await getDbConnection();
@@ -47,14 +51,12 @@ export async function postActivityAvailable(request: HttpRequest, context: Invoc
             .input("organizador", sql.NVarChar, body.organizador)
             .execute("sp_insertar_actividad");
 
-           // console.log(result);
-        // Respuesta exitosa
         return {
             status: 201,
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                message: "La actividad Creada exitosamente.",
-                data: result.recordset // Opcional: incluir datos adicionales
+                message: "Actividad guardada con éxito.",
+                data: result.recordset
             })
         };
     } catch (error) {

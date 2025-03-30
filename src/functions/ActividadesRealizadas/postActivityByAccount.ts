@@ -9,8 +9,7 @@ export async function postActivityByAccount(request: HttpRequest, context: Invoc
         pool = await getDbConnection();
         context.log("Conexión a la base de datos establecida");
 
-        // Obtener los datos del cuerpo de la solicitud y asegurar que tiene el tipo correcto
-        const body = await request.json() as { no_cuenta: string};
+        const body = await request.json() as { no_cuenta: string };
         const no_cuenta = body.no_cuenta;
         if (!no_cuenta) {
             return {
@@ -19,14 +18,12 @@ export async function postActivityByAccount(request: HttpRequest, context: Invoc
             };
         }
 
-        // Ejecutamos el procedimiento almacenado para obtener las actividades
         let result = await pool.request()
             .input("no_cuenta", sql.VarChar, no_cuenta)
             .execute("sp_ObtenerActividadesPorRealizadasBecario");
 
         context.log("Consulta ejecutada con éxito");
 
-        // Retornamos el resultado en formato JSON
         let responseData = {
             actividades: result.recordset
         };
@@ -38,14 +35,10 @@ export async function postActivityByAccount(request: HttpRequest, context: Invoc
             }
         };
     } catch (error) {
-        // Log de error
-        context.log(`Error: ${error}`);
-        
-        // Devolver un mensaje genérico al cliente
         return {
             status: 500,
             body: 'Error interno del servidor'
         };
-    } 
-   
+    }
+
 };

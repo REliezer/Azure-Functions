@@ -2,21 +2,21 @@ import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functio
 import { getDbConnection } from "../dbConnection";
 import * as sql from "mssql";
 import * as bcrypt from "bcryptjs";
+const jwt = require('jsonwebtoken');
 
 export async function loginEmployee(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
         const body = await request.json() as { no_empleado?: string; contrasena?: string };
 
         if (!body.no_empleado || !body.contrasena) {
-            return { status: 400, body: 'El campo no_empleado y la contraseña son requeridos' };
+            return { status: 400, body: JSON.stringify({ error: 'El campo no_empleado y la contraseña son requeridos' }) };
         }
 
         let pool = await getDbConnection();
         if (!pool) {
-            return { status: 500, body: 'No se pudo conectar a la base de datos' };
+            return { status: 500, body: JSON.stringify({ error: 'No se pudo conectar a la base de datos' }) };
         }
 
-        // Obtener el empleado con la contraseña encriptada
         let result = await pool.request()
             .input("noEmpleado", sql.NVarChar, body.no_empleado)
             .query("SELECT * FROM empleado WHERE no_empleado = @noEmpleado");
@@ -32,9 +32,8 @@ export async function loginEmployee(request: HttpRequest, context: InvocationCon
         }
 
         const storedPassword = result.recordset[0].contrasena;
-
-        // Comparar la contraseña ingresada con la encriptada
         const isMatch = await bcrypt.compare(body.contrasena, storedPassword);
+
         if (!isMatch) {
             return {
                 status: 401,
@@ -45,8 +44,33 @@ export async function loginEmployee(request: HttpRequest, context: InvocationCon
             };
         }
 
+        // Verificar que las variables de entorno existen
+        if (!process.env.JWT_SECRET || !process.env.JWT_EXPIRES_IN) {
+            throw new Error("JWT_SECRET o JWT_EXPIRES_IN no están definidos en las variables de entorno");
+        }
+        
+        // Generar token JWT
+        const token = jwt.sign(
+            {
+                empleado_id: result.recordset[0].empleado_id,
+                persona_id: result.recordset[0].persona_id,
+                no_empleado: result.recordset[0].no_empleado,
+                centro_id: result.recordset[0].centro_id,
+                rol: 'admin',
+                role_level: result.recordset[0].rol_id
+            },
+            process.env.JWT_SECRET!,
+            {
+                expiresIn: process.env.JWT_EXPIRES_IN
+            }
+        );
+
+        // Calcular la fecha de expiración para Set-Cookie (7 días)
+        const expires = new Date();
+        expires.setTime(expires.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 días
+
         // Actualizar último acceso
-        const lastAccessUpdate = new Date(); // Fecha y hora actual
+        const lastAccessUpdate = new Date();
         let updateResult = await pool.request()
             .input("noEmpleado", sql.NVarChar, body.no_empleado)
             .input("lastAccessUpdate", sql.DateTime, lastAccessUpdate)
@@ -58,9 +82,10 @@ export async function loginEmployee(request: HttpRequest, context: InvocationCon
 
         return {
             status: 200,
-            body: JSON.stringify({ employee: result.recordset[0], status: true }),
+            body: JSON.stringify({ token, status: true }),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Set-Cookie': `token=${token}; HttpOnly; Secure; SameSite=Strict; Expires=${expires.toUTCString()}; Path=/`
             }
         };
     } catch (error) {

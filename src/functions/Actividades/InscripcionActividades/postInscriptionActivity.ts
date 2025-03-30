@@ -13,7 +13,6 @@ export async function postInscriptionActivity(request: HttpRequest, context: Inv
             no_cuenta: string
         };
 
-        // Validar datos de entrada
         if (!body.actividad_id || !body.no_cuenta) {
             return {
                 status: 400,
@@ -24,7 +23,6 @@ export async function postInscriptionActivity(request: HttpRequest, context: Inv
         let pool = await getDbConnection();
         context.log("Connected to database");
 
-        // Ejecutar el procedimiento almacenado
         let result = await pool.request()
             .input("actividad_id", sql.VarChar, body.actividad_id)
             .input("no_cuenta", sql.NVarChar, body.no_cuenta)

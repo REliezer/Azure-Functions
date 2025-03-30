@@ -1,12 +1,17 @@
 import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { getDbConnection } from "../dbConnection";
+import { authMiddleware } from "../auth/authMiddleware";
 import * as sql from "mssql";
 import { json } from "stream/consumers";
 
 export async function postReporteSeguimiento(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     const customErrors = [50000, 50001, 50002, 50003];
-    context.log("Procesando solicitud para ingresar el reporte de seguimiento...");
     try {
+        const authResponse = await authMiddleware(request, context, [1, 3]);
+        if (authResponse) return authResponse;
+
+        context.log("Procesando solicitud para ingresar el reporte de seguimiento...");
+
         const body = await request.json() as {
             no_cuenta: string;
             nombre_estado_anterior: string;
@@ -19,19 +24,19 @@ export async function postReporteSeguimiento(request: HttpRequest, context: Invo
             observaciones?: string;
             enlace: string;
         };
-        context.log('body: ',body);
+        context.log('body: ', body);
         if (!body.no_cuenta || !body.nombre_estado_anterior || !body.empleado_id || !body.nombre_reporte || body.total_horas === null || body.total_horas === undefined || !body.enlace) {
             return {
                 status: 400,
                 body: JSON.stringify("Falta el parámetro 'no_cuenta', 'nombre_estado_anterior', 'empleado_id', 'nombre_reporte', 'enlace' y 'total_horas'.")
             };
         }
-        
 
         let pool = await getDbConnection();
         if (!pool) {
             return { status: 500, body: 'No se pudo conectar a la base de datos' };
         }
+        
         context.log("Connected to database");
 
         let result = await pool.request()
