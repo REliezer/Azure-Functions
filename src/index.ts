@@ -38,6 +38,7 @@ import { putStateBeca } from "./functions/SeguimientoAcademico/putStateBeca";
 import { postReporteSeguimiento } from "./functions/SeguimientoAcademico/postReporteSeguimiento";
 import { putPreguntas } from "./functions/FAQ/putFaq";
 import { postFaq } from "./functions/FAQ/postFaq";
+import { timerTriggerEstadoActividad } from "./functions/Actividades/timerTriggerEstadoActividad";
 
 //Auth
 app.http('loginBecario', {
@@ -60,7 +61,6 @@ app.http('changePassword', {
     route: 'auth/changePassword',
     handler: changePassword,
 });
-
 
 //Actividades
 app.http('getActivities', {
@@ -95,10 +95,10 @@ app.http('postActivityInProgressByAccount', {
 });
 
 app.http('putActivityAvailable', {
-    methods: ['PUT'],  // Usamos el método PUT
-    authLevel: 'anonymous',  // Puedes cambiar el nivel de autenticación según lo que necesites
-    route: "putActivityAvailable",  // Ruta dinámica para el id de la actividad
-    handler: putActivityAvailable,  // Llamamos la función que maneja la actualización
+    methods: ['PUT'],
+    authLevel: 'anonymous', 
+    route: "putActivityAvailable",
+    handler: putActivityAvailable,
 });
 
 app.http('deleteActivityById', {
@@ -113,6 +113,12 @@ app.http("postActivityAvailable", {
     authLevel: "anonymous",
     route: "actividad/", 
     handler: postActivityAvailable,
+});
+
+//timer para actualizar el estado de la actividad si ya paso
+app.timer('timerTriggerEstadoActividad', {
+    schedule: '59 59 23 * * *', //Todos los días a las 23:59:59
+    handler: timerTriggerEstadoActividad
 });
 
 //Inscripcion Actividades
