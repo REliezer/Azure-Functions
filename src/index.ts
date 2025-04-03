@@ -72,7 +72,7 @@ app.http('getActivities', {
 
 //actividades de becario disponibles
 app.http('getBecarioActivity', {
-    methods: ['GET'], 
+    methods: ['POST'], 
     authLevel: 'anonymous',
     route: "getBecarioActivity",
         handler: getBecarioActivity,

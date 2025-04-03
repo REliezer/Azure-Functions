@@ -21,6 +21,7 @@ export async function postActivityAvailable(request: HttpRequest, context: Invoc
             imagen?: string;
             estado_actividad?: string;
             organizador?: string;
+            centro_id?: number;
         };
 
         // Validar los datos de entrada usando el validador
@@ -49,6 +50,7 @@ export async function postActivityAvailable(request: HttpRequest, context: Invoc
             .input("imagen", sql.NVarChar, body.imagen)
             .input("estado_actividad", sql.NVarChar, body.estado_actividad)
             .input("organizador", sql.NVarChar, body.organizador)
+            .input("centro_id", sql.Int, body.centro_id)
             .execute("sp_insertar_actividad");
 
         return {
