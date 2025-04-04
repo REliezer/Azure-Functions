@@ -16,6 +16,7 @@ export class ActivityValidator {
         { field: 'imagen', validator: (value: any) => value === undefined || typeof value === 'string', message: 'El campo imagen debe ser un texto válido o estar vacío.' },
         { field: 'estado_actividad', validator: (value: any) => value === undefined || ['Disponible', 'Terminada', 'Cancelada'].includes(value), message: 'El campo estado_actividad debe ser uno de los siguientes valores: Disponible, Terminada, Cancelada.' },
         { field: 'organizador', validator: (value: any) => value === undefined || typeof value === 'string', message: 'El campo organizador debe ser un texto válido o estar vacío.' },
+        { field: 'centro_id', validator: (value: any) => Number.isInteger(value), message: 'El campo centro_id debe ser un id valido.' }
     ];
 
     public static validate(body: any) {
