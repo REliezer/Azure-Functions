@@ -4,7 +4,6 @@ import { authMiddleware } from "../auth/authMiddleware";
 import * as fs from "fs";
 import fetch from "node-fetch"; // Para descargar archivos remotos
 
-// Función principal
 export async function sendEmailACS(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
         const authResponse = await authMiddleware(request, context, [1, 3]);
@@ -30,7 +29,7 @@ export async function sendEmailACS(request: HttpRequest, context: InvocationCont
 
         // Construcción del mensaje
         const message: EmailMessage = {
-            senderAddress: "DoNotReply@c7d78e32-1f49-43cd-8d9f-31f305616fd0.azurecomm.net",
+            senderAddress: "DoNotReply@1b151f55-32b4-4625-abf2-d2dd2d9e2224.azurecomm.net",
             recipients: {
                 to: [
                     {
