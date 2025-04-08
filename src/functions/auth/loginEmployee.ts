@@ -116,7 +116,10 @@ export async function loginEmployee(request: HttpRequest, context: InvocationCon
                 'Content-Type': 'application/json',
                 "Access-Control-Allow-Origin": "http://localhost:5173",
                 "Access-Control-Allow-Credentials": "true",
-                'Set-Cookie': `refreshToken=${refreshToken}; HttpOnly; SameSite=Lax; Expires=${expires.toUTCString()}; Path=/`
+                //Pruebas
+                //'Set-Cookie': `refreshToken=${refreshToken}; HttpOnly; SameSite=Lax; Expires=${expires.toUTCString()}; Path=/`
+                //Deploy
+                'Set-Cookie': `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=None; Expires=${expires.toUTCString()}; Path=/`
             }
         };
     } catch (error) {
