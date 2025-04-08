@@ -40,6 +40,7 @@ import { putPreguntas } from "./functions/FAQ/putFaq";
 import { postFaq } from "./functions/FAQ/postFaq";
 import { timerTriggerEstadoActividad } from "./functions/Actividades/timerTriggerEstadoActividad";
 import { refreshAccessToken } from "./functions/auth/refreshAccessToken";
+import { DeleteFAQ } from "./functions/FAQ/EliminarPregunta";
 
 //Auth
 app.http('loginBecario', {
@@ -245,7 +246,7 @@ app.http('getBecaStateById', {
 app.http('getPlanillaByIdBecario', {
     methods: ['GET'],
     authLevel: 'anonymous',
-    route: 'planilla/{id?}',
+    route: 'planilla/{becario_id?}',
     handler: getPlanillaByIdBecario,
 });
 
@@ -325,4 +326,11 @@ app.http('postReporteSeguimiento', {
     authLevel: 'anonymous',
     route: "reporteSeguimiento",
     handler: postReporteSeguimiento,
+});
+
+app.http('DeleteFAQ', {
+    methods: ['DELETE'],
+    authLevel: 'anonymous',
+    route: "DeleteFAQ", 
+    handler: DeleteFAQ,
 });

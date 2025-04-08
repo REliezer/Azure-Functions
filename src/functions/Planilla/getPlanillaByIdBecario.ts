@@ -1,50 +1,43 @@
-import { HttpRequest, HttpResponseInit, InvocationContext, output, StorageQueueOutput } from "@azure/functions";
+import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { getDbConnection } from "../dbConnection";
 import * as sql from "mssql";
 
-export async function getPlanillaByIdBecario(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    try {
-        context.log(`Http function processed request for url "${request.url}"`);
-
-        const becario_id = request.params.id;
-        if (!becario_id) {
-            return {
-                status: 400,
-                body: 'El campo becario_id es requerido'
+    export async function getPlanillaByIdBecario(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {       
+        let pool;
+        try {
+            context.log(`Http function processed request for url "${request.url}"`);
+            pool = await getDbConnection();
+        
+            const becario_id = request.params.becario_id; // Accede al parámetro de la URL
+            if (!becario_id) {
+                return {
+                    status: 400,
+                    body: 'El campo becario_id es requerido en la URL!!'
+                };
+            }
+        
+            let result = await pool.request()
+                .input("becario_id", sql.VarChar, becario_id)
+                .execute("sp_planillaBecario");
+        
+            context.log("Consulta ejecutada con éxito");
+        
+            let responseData = {
+                data: result.recordset
             };
-        }
-        // Conectar a la base de datos
-        let pool = await getDbConnection();
-        if (!pool) {
+        
+            return {
+                body: JSON.stringify(responseData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+        } catch (error) {
+            context.log(`Error: ${error}`);
             return {
                 status: 500,
-                body: 'No se pudo conectar a la base de datos'
+                body: 'Error interno del servidor'
             };
         }
-        context.log("Connected to database");
-
-        // Obtiene las planillas disponibles
-        let result = await pool.request()
-            .input('becario_id', sql.NChar, becario_id)
-            .query("SELECT * FROM planilla_x_mes WHERE becario_id = @becario_id");
-
-        context.log("Consulta ejecutada con éxito");
-
-        return {
-            status: 200,
-            body: JSON.stringify({planilla: result.recordset, status: true}),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-
-    } catch (error) {
-        context.log(`Error: ${error}`);
-        return {
-            status: 500,
-            body: 'Internal Server Error'
-        };
-    }
-};
-
-
+    };
+    
