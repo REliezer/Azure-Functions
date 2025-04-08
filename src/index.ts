@@ -39,6 +39,7 @@ import { postReporteSeguimiento } from "./functions/SeguimientoAcademico/postRep
 import { putPreguntas } from "./functions/FAQ/putFaq";
 import { postFaq } from "./functions/FAQ/postFaq";
 import { timerTriggerEstadoActividad } from "./functions/Actividades/timerTriggerEstadoActividad";
+import { refreshAccessToken } from "./functions/auth/refreshAccessToken";
 
 //Auth
 app.http('loginBecario', {
@@ -60,6 +61,13 @@ app.http('changePassword', {
     authLevel: 'anonymous',
     route: 'auth/changePassword',
     handler: changePassword,
+});
+
+app.http('refreshAccessToken', {
+    methods: ['POST'],
+    authLevel: 'anonymous',
+    route: 'auth/refreshAccessToken',
+    handler: refreshAccessToken,
 });
 
 //Actividades

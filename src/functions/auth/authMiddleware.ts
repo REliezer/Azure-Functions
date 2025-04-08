@@ -21,6 +21,6 @@ export async function authMiddleware(request: HttpRequest, context: InvocationCo
         return null;
 
     } catch (err) {
-        return { status: 403, body: JSON.stringify({ error: "Token inválido o expirado.", state: false }) };
+        return { status: 401, body: JSON.stringify({ error: "Token inválido o expirado.", state: false }) };
     }
 }

@@ -41,7 +41,7 @@ export async function getInfoSeguimientobyNoCuenta(request: HttpRequest, context
     } catch (error) {
         return {
             status: 404,
-            body: JSON.stringify({ error: `Error al obtener info de seguimiento.` })
+            body: JSON.stringify({ error: `No se encontró el becario` })
         };
     }
 }
