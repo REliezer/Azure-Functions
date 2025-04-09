@@ -2,7 +2,7 @@ import { HttpRequest, HttpResponseInit, InvocationContext, output, StorageQueueO
 import { getDbConnection } from "../dbConnection";
 import * as sql from "mssql";
 
-export async function planillaByIdBecario(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+export async function getplanillaByIdBecario(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     try {
         context.log(`Http function processed request for url "${request.url}"`);
 

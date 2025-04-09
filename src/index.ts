@@ -14,7 +14,6 @@ import { putActivityAvailable } from "./functions/Actividades/putActivityAvailab
 import { deleteActivityById } from "./functions/Actividades/deleteActivityById";
 import { changePassword } from "./functions/auth/changePassword";
 import { getBecaById } from "./functions/Becas/getBecaById";
-import { getPlanillaByIdBecario } from "./functions/Planilla/getPlanillaByIdBecario";
 import { getBecarioActivity } from "./functions/Actividades/getBecarioActivity";
 import { getPersonaById } from "./functions/Persona/getPersonaById";
 import { getBecaStateById } from "./functions/Becas/getBecaStateById";
@@ -41,6 +40,7 @@ import { postFaq } from "./functions/FAQ/postFaq";
 import { timerTriggerEstadoActividad } from "./functions/Actividades/timerTriggerEstadoActividad";
 import { refreshAccessToken } from "./functions/auth/refreshAccessToken";
 import { DeleteFAQ } from "./functions/FAQ/EliminarPregunta";
+import { getplanillaByIdBecario } from "./functions/Planilla/getPlanillaByIdBecario";
 
 //Auth
 app.http('loginBecario', {
@@ -243,11 +243,11 @@ app.http('getBecaStateById', {
 });
 
 //Planilla
-app.http('getPlanillaByIdBecario', {
+app.http('getplanillaByIdBecario', {
     methods: ['GET'],
     authLevel: 'anonymous',
-    route: 'planilla/{becario_id?}',
-    handler: getPlanillaByIdBecario,
+    route: 'planilla/{id?}',
+    handler: getplanillaByIdBecario,
 });
 
 //Persona
