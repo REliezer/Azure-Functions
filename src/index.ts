@@ -41,6 +41,7 @@ import { timerTriggerEstadoActividad } from "./functions/Actividades/timerTrigge
 import { refreshAccessToken } from "./functions/auth/refreshAccessToken";
 import { DeleteFAQ } from "./functions/FAQ/EliminarPregunta";
 import { getplanillaByIdBecario } from "./functions/Planilla/getPlanillaByIdBecario";
+import { postPlanilla } from "./functions/Planilla/postPlanilla";
 
 //Auth
 app.http('loginBecario', {
@@ -249,6 +250,15 @@ app.http('getplanillaByIdBecario', {
     route: 'planilla/{id?}',
     handler: getplanillaByIdBecario,
 });
+
+app.http('postPlanilla', {
+    methods: ['POST'],
+    authLevel: 'anonymous',
+    route: "postPlanilla",
+    handler: postPlanilla,
+});
+
+
 
 //Persona
 app.http('getPersonaById', {
