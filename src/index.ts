@@ -42,6 +42,7 @@ import { refreshAccessToken } from "./functions/auth/refreshAccessToken";
 import { DeleteFAQ } from "./functions/FAQ/EliminarPregunta";
 import { getplanillaByIdBecario } from "./functions/Planilla/getPlanillaByIdBecario";
 import { postPlanilla } from "./functions/Planilla/postPlanilla";
+import { getPlanillaAdministracion } from "./functions/Planilla/PlanillaAdministracion";
 
 //Auth
 app.http('loginBecario', {
@@ -249,6 +250,13 @@ app.http('getplanillaByIdBecario', {
     authLevel: 'anonymous',
     route: 'planilla/{id?}',
     handler: getplanillaByIdBecario,
+});
+
+app.http('PlanillaAdministracion', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: 'PlanillaAdministracion',
+    handler: getPlanillaAdministracion,
 });
 
 app.http('postPlanilla', {

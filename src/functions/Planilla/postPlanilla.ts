@@ -15,7 +15,7 @@ export async function postPlanilla(request: HttpRequest, context: InvocationCont
             mes: string;
             anio: number;   
             centro_estudio_id: number;
-            empleado_id: string; 
+            empleado_id: string;
         };
 
         const validationResult = PlanillaValidator.validate(body);
