@@ -46,7 +46,7 @@ export async function putActivityAvailable(request: HttpRequest, context: Invoca
             .input("imagen", sql.NVarChar, body.imagen || null)
             .input("estado_actividad", sql.NVarChar, body.estado_actividad || null)
             .input("organizador", sql.NVarChar, body.organizador || null)
-            .input("centro_id", sql.Int, body.centro_id || null)
+            .input("centro_id", sql.Int, body.centro_id !== undefined ? body.centro_id : null)
             .execute("UpdateActividad");
 
         if (result.rowsAffected[0] === 0) {
