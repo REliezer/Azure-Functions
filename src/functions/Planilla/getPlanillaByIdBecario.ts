@@ -11,7 +11,6 @@ export async function getplanillaByIdBecario(request: HttpRequest, context: Invo
             beca_id: number;
         };
 
-        context.log('body: ', body);
         if (!body.becario_id || body.becario_id === null || body.becario_id === undefined) {
             return {
                 status: 400,
@@ -35,7 +34,8 @@ export async function getplanillaByIdBecario(request: HttpRequest, context: Invo
         context.log("Consulta ejecutada con éxito");
 
         return {
-            body: JSON.stringify(result.recordset),
+            status: 200,
+            body: JSON.stringify({planilla: result.recordset, status: true}),
             headers: {
                 'Content-Type': 'application/json'
             }
