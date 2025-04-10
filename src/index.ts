@@ -43,6 +43,7 @@ import { DeleteFAQ } from "./functions/FAQ/EliminarPregunta";
 import { getplanillaByIdBecario } from "./functions/Planilla/getPlanillaByIdBecario";
 import { postPlanilla } from "./functions/Planilla/postPlanilla";
 import { getPlanillaAdministracion } from "./functions/Planilla/PlanillaAdministracion";
+import { Deleteplanilla_Id } from "./functions/Planilla/DeleteplanillabyId";
 
 //Auth
 app.http('loginBecario', {
@@ -351,4 +352,12 @@ app.http('DeleteFAQ', {
     authLevel: 'anonymous',
     route: "DeleteFAQ", 
     handler: DeleteFAQ,
+});
+
+
+app.http('Deleteplanilla_Id', {
+    methods: ['DELETE'],
+    authLevel: 'anonymous',
+    route: "Deleteplanilla_Id", 
+    handler: Deleteplanilla_Id,
 });
