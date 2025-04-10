@@ -7,7 +7,7 @@ interface ValidationRule {
 export class PlanillaValidator {
     private static PlanillaValidations: ValidationRule[] = [
         { field: 'mes', validator: (value: any) => typeof value === 'string' && value.trim() !== '', message: 'El campo mes es obligatorio.' },
-        { field: 'anio', validator: (value: any) => typeof value === 'number' && !isNaN(value), message: 'El campo año es obligatorio y debe ser un número.' },
+        { field: 'anio', validator: (value: any) => typeof value === 'number' && value >= 0, message: 'El campo año es obligatorio y debe ser un número.' },
         { field: 'centro_estudio_id', validator: (value: any) => typeof value === 'number' && value >= 0, message: 'El campo centro de estudio es obligatorio y debe ser un número válido.' },
         { field: 'empleado_id', validator: (value: any) => typeof value === 'string' && value.trim() !== '', message: 'El campo empleado es obligatorio.' },
     ];

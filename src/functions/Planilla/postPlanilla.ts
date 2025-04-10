@@ -52,7 +52,6 @@ export async function postPlanilla(request: HttpRequest, context: InvocationCont
                 })
             };
         }
-
         return {
             status: 201,
             headers: { "Content-Type": "application/json" },
