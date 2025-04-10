@@ -184,6 +184,13 @@ app.http('postFaq', {
     handler: postFaq,
 });
 
+app.http('DeleteFAQ', {
+    methods: ['DELETE'],
+    authLevel: 'anonymous',
+    route: "DeleteFAQ", 
+    handler: DeleteFAQ,
+});
+
 //Employees
 //app.http('encryptPasswordsEmployees', {
 //    methods: ['POST'],
@@ -247,9 +254,9 @@ app.http('getBecaStateById', {
 
 //Planilla
 app.http('getplanillaByIdBecario', {
-    methods: ['GET'],
+    methods: ['POST'],
     authLevel: 'anonymous',
-    route: 'planilla/{id?}',
+    route: 'planilla',
     handler: getplanillaByIdBecario,
 });
 
@@ -266,8 +273,6 @@ app.http('postPlanilla', {
     route: "postPlanilla",
     handler: postPlanilla,
 });
-
-
 
 //Persona
 app.http('getPersonaById', {
@@ -346,14 +351,6 @@ app.http('postReporteSeguimiento', {
     route: "reporteSeguimiento",
     handler: postReporteSeguimiento,
 });
-
-app.http('DeleteFAQ', {
-    methods: ['DELETE'],
-    authLevel: 'anonymous',
-    route: "DeleteFAQ", 
-    handler: DeleteFAQ,
-});
-
 
 app.http('Deleteplanilla_Id', {
     methods: ['DELETE'],

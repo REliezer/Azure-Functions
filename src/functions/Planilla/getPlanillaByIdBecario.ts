@@ -1,4 +1,4 @@
-import { HttpRequest, HttpResponseInit, InvocationContext, output, StorageQueueOutput } from "@azure/functions";
+import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { getDbConnection } from "../dbConnection";
 import * as sql from "mssql";
 
@@ -6,10 +6,19 @@ export async function getplanillaByIdBecario(request: HttpRequest, context: Invo
     try {
         context.log(`Http function processed request for url "${request.url}"`);
 
-        const becario_id = request.params.id;
-        if (!becario_id) {
-            return { status: 400, body: 'El campo becario_id es requerido' };
+        const body = await request.json() as {
+            becario_id: string;
+            beca_id: number;
+        };
+
+        context.log('body: ', body);
+        if (!body.becario_id || body.becario_id === null || body.becario_id === undefined) {
+            return {
+                status: 400,
+                body: JSON.stringify("Falta parametros obligatorios.")
+            };
         }
+
         // Conectar a la base de datos
         let pool = await getDbConnection();
         if (!pool) {
@@ -19,8 +28,9 @@ export async function getplanillaByIdBecario(request: HttpRequest, context: Invo
 
         // Obtiene las planillas disponibles
         let result = await pool.request()
-            .input('becario_id', sql.NChar, becario_id)
-            .query("SELECT * FROM planilla_x_mes WHERE becario_id = @becario_id");
+            .input('becario_id', sql.VarChar, body.becario_id)
+            .input('beca_id', sql.Int, body.beca_id)
+            .execute("get_informacion_planilla_by_cuenta");
 
         context.log("Consulta ejecutada con éxito");
 
