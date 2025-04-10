@@ -44,6 +44,7 @@ import { getplanillaByIdBecario } from "./functions/Planilla/getPlanillaByIdBeca
 import { postPlanilla } from "./functions/Planilla/postPlanilla";
 import { getPlanillaAdministracion } from "./functions/Planilla/PlanillaAdministracion";
 import { Deleteplanilla_Id } from "./functions/Planilla/DeleteplanillabyId";
+import { informacionPlanillabyId } from "./functions/Planilla/informacionPlanillabyId";
 
 //Auth
 app.http('loginBecario', {
@@ -360,4 +361,12 @@ app.http('Deleteplanilla_Id', {
     authLevel: 'anonymous',
     route: "Deleteplanilla_Id", 
     handler: Deleteplanilla_Id,
+});
+
+
+app.http('informacionPlanillabyId', {
+    methods: ['GET'],
+    authLevel: 'anonymous',
+    route: "informacionPlanillabyId/{planilla_id}",
+    handler: informacionPlanillabyId,
 });
