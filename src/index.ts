@@ -45,6 +45,7 @@ import { postPlanilla } from "./functions/Planilla/postPlanilla";
 import { getPlanillaAdministracion } from "./functions/Planilla/PlanillaAdministracion";
 import { Deleteplanilla_Id } from "./functions/Planilla/DeleteplanillabyId";
 import { informacionPlanillabyId } from "./functions/Planilla/informacionPlanillabyId";
+import { getSasToken } from "./functions/auth/getSasToken";
 
 //Auth
 app.http('loginBecario', {
@@ -366,4 +367,11 @@ app.http('informacionPlanillabyId', {
     authLevel: 'anonymous',
     route: "informacionPlanillabyId/{planilla_id}",
     handler: informacionPlanillabyId,
+});
+
+app.http('getSasToken', {
+    methods: ['POST'],
+    authLevel: 'anonymous',
+    route: "getSasToken",
+    handler: getSasToken,
 });
