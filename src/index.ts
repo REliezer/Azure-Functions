@@ -241,9 +241,9 @@ app.http('getAllBecas', {
 });
 
 app.http('getBecaById', {
-    methods: ['GET'],
+    methods: ['POST'],
     authLevel: 'anonymous',
-    route: 'becas/{id?}',
+    route: 'becas/byId',
     handler: getBecaById,
 });
 

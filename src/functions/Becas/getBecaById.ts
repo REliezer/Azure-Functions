@@ -6,11 +6,15 @@ export async function getBecaById(request: HttpRequest, context: InvocationConte
     try {
         context.log(`Http function processed request for url "${request.url}"`);
 
-        const beca_id = request.params.id;
-        if (!beca_id) {
+        const body = await request.json() as {
+            beca_id: string;
+            becario_id: string;
+        };
+
+        if (!body.beca_id || !body.becario_id) {
             return {
                 status: 400,
-                body: 'El campo beca_id es requerido'
+                body: JSON.stringify('Faltan parámetros obligatorios.')
             };
         }
         // Conectar a la base de datos
@@ -25,8 +29,9 @@ export async function getBecaById(request: HttpRequest, context: InvocationConte
 
         // Obtiene los detalles de una beca segun id
         let result = await pool.request()
-            .input('becaId', sql.Int, beca_id)
-            .query("SELECT * FROM becas WHERE beca_id = @becaId");
+            .input('beca_id', sql.Int, body.beca_id)
+            .input('becario_id', sql.VarChar, body.becario_id)
+            .execute('sp_informacion_beca_by_beca_id');
 
         context.log("Consulta ejecutada con éxito");
 
